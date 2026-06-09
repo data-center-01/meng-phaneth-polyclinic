@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&display=swap');
+        body {
+            font-family: 'Battambang', sans-serif;
+            background-color: #f3f4f6;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: white;
+            }
+            .hide-on-print {
+                display: none !important;
+            }
+            #print-area {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #000;
+                padding: 8px;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 24px;
+                font-weight: bold;
+            }
+        }
+
+        .print-header {
+            display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 hide-on-print">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
+                <i class="fas fa-wallet text-blue-600"></i> កត់ត្រាចំណូលចំណាយប្រចាំថ្ងៃ
+            </h1>
+            <div class="mt-4 md:mt-0 flex gap-2">
+                <button onclick="exportData()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition">
+                    <i class="fas fa-download mr-1"></i> រក្សាទុក (Export PC)
+                </button>
+                <input type="file" id="importFile" accept=".json" class="hidden" onchange="importData(event)">
+                <button onclick="document.getElementById('importFile').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition">
+                    <i class="fas fa-upload mr-1"></i> បញ្ចូល (Import)
+                </button>
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">ចំណូលសរុប</p>
+                    <h2 class="text-2xl font-bold text-green-600" id="totalIncome">$0.00</h2>
+                </div>
+                <div class="p-3 bg-green-100 rounded-full text-green-500">
+                    <i class="fas fa-arrow-down fa-lg"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">ចំណាយសរុប</p>
+                    <h2 class="text-2xl font-bold text-red-600" id="totalExpense">$0.00</h2>
+                </div>
+                <div class="p-3 bg-red-100 rounded-full text-red-500">
+                    <i class="fas fa-arrow-up fa-lg"></i>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">សមតុល្យ (សាច់ប្រាក់សល់)</p>
+                    <h2 class="text-2xl font-bold text-blue-600" id="totalBalance">$0.00</h2>
+                </div>
+                <div class="p-3 bg-blue-100 rounded-full text-blue-500">
+                    <i class="fas fa-coins fa-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Form -->
+            <div class="lg:col-span-1 hide-on-print">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">បន្ថែមប្រតិបត្តិការថ្មី</h3>
+                    <form id="transactionForm" onsubmit="addTransaction(event)">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">កាលបរិច្ឆេទ</label>
+                            <input type="date" id="tDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ប្រភេទ</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="tType" value="income" required class="mr-2 h-4 w-4 text-green-600"> ចំណូល
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="tType" value="expense" required class="mr-2 h-4 w-4 text-red-600"> ចំណាយ
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ការពិពណ៌នា</label>
+                            <input type="text" id="tDesc" required placeholder="ឧ. លក់ទំនិញ, ទិញម្ហូប..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ចំនួនទឹកប្រាក់ ($)</label>
+                            <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                            <i class="fas fa-plus-circle"></i> រក្សាទុក
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Table -->
+            <div class="lg:col-span-2" id="print-area">
+                <div class="print-header">របាយការណ៍ចំណូលចំណាយ</div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 border-b flex justify-between items-center hide-on-print bg-gray-50">
+                        <h3 class="text-xl font-bold text-gray-800">បញ្ជីប្រតិបត្តិការ</h3>
+                        <button onclick="printSelected()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded shadow transition text-sm">
+                            <i class="fas fa-print mr-1"></i> Print ទិន្នន័យដែលបានជ្រើសរើស
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse print-table">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 text-sm uppercase leading-normal">
+                                    <th class="py-3 px-4 w-10 hide-on-print text-center">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()" class="h-4 w-4">
+                                    </th>
+                                    <th class="py-3 px-4">កាលបរិច្ឆេទ</th>
+                                    <th class="py-3 px-4">ការពិពណ៌នា</th>
+                                    <th class="py-3 px-4">ប្រភេទ</th>
+                                    <th class="py-3 px-4 text-right">ទឹកប្រាក់</th>
+                                    <th class="py-3 px-4 text-center hide-on-print">សកម្មភាព</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="text-gray-700 text-sm">
+                                <!-- Data will be rendered here via JS -->
+                            </tbody>
+                        </table>
+                        <div id="emptyState" class="text-center py-8 text-gray-500 hidden hide-on-print">
+                            <i class="fas fa-folder-open text-4xl mb-3 opacity-50"></i>
+                            <p>មិនទាន់មានទិន្នន័យនៅឡើយទេ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Print Summary (Only visible when printing) -->
+                <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area">
+                    <p>សរុបចំណូល: <span id="printTotalIncome" class="text-green-600">$0.00</span></p>
+                    <p>សរុបចំណាយ: <span id="printTotalExpense" class="text-red-600">$0.00</span></p>
+                    <p class="mt-2 pt-2 border-t border-gray-400">សមតុល្យសរុប: <span id="printTotalBalance" class="text-blue-600">$0.00</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default date to today
+        document.getElementById('tDate').valueAsDate = new Date();
+
+        // Initialize state from local storage
+        let transactions = JSON.parse(localStorage.getItem('finance_data')) || [];
+
+        // Formatting functions
+        const formatMoney = (amount) => {
+            return '$' + parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        };
+
+        const formatDate = (dateString) => {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return new Date(dateString).toLocaleDateString('en-GB', options);
+        };
+
+        // Render functions
+        function renderApp() {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            let totalIn = 0;
+            let totalOut = 0;
+
+            // Sort transactions by date descending
+            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (transactions.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                
+                transactions.forEach(t => {
+                    if(t.type === 'income') totalIn += parseFloat(t.amount);
+                    else totalOut += parseFloat(t.amount);
+
+                    const amountColor = t.type === 'income' ? 'text-green-600' : 'text-red-600';
+                    const typeText = t.type === 'income' ? 'ចំណូល' : 'ចំណាយ';
+                    const amountPrefix = t.type === 'income' ? '+' : '-';
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-gray-200 hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="py-3 px-4 text-center hide-on-print">
+                            <input type="checkbox" class="row-checkbox h-4 w-4 cursor-pointer" data-id="${t.id}">
+                        </td>
+                        <td class="py-3 px-4">${formatDate(t.date)}</td>
+                        <td class="py-3 px-4 font-medium">${t.desc}</td>
+                        <td class="py-3 px-4">
+                            <span class="${t.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} py-1 px-3 rounded-full text-xs">
+                                ${typeText}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-right font-bold ${amountColor}">
+                            ${amountPrefix}${formatMoney(t.amount)}
+                        </td>
+                        <td class="py-3 px-4 text-center hide-on-print">
+                            <button onclick="deleteTransaction('${t.id}')" class="text-red-500 hover:text-red-700 transition" title="លុប">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Update Summaries
+            const balance = totalIn - totalOut;
+            document.getElementById('totalIncome').innerText = formatMoney(totalIn);
+            document.getElementById('totalExpense').innerText = formatMoney(totalOut);
+            document.getElementById('totalBalance').innerText = formatMoney(balance);
+            
+            // For print summary
+            document.getElementById('printTotalIncome').innerText = formatMoney(totalIn);
+            document.getElementById('printTotalExpense').innerText = formatMoney(totalOut);
+            document.getElementById('printTotalBalance').innerText = formatMoney(balance);
+
+            // Reset Select All checkbox
+            document.getElementById('selectAll').checked = false;
+        }
+
+        // Action Functions
+        function addTransaction(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('tDate').value;
+            const type = document.querySelector('input[name="tType"]:checked').value;
+            const desc = document.getElementById('tDesc').value;
+            const amount = document.getElementById('tAmount').value;
+
+            const newTx = {
+                id: Date.now().toString(),
+                date,
+                type,
+                desc,
+                amount: parseFloat(amount)
+            };
+
+            transactions.push(newTx);
+            saveData();
+            renderApp();
+            
+            // Reset form partly
+            document.getElementById('tDesc').value = '';
+            document.getElementById('tAmount').value = '';
+        }
+
+        function deleteTransaction(id) {
+            if(confirm('តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?')) {
+                transactions = transactions.filter(t => t.id !== id);
+                saveData();
+                renderApp();
+            }
+        }
+
+        function toggleSelectAll() {
+            const isChecked = document.getElementById('selectAll').checked;
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = isChecked);
+        }
+
+        function printSelected() {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            let hasSelection = false;
+
+            // Recalculate totals for printed items
+            let pIn = 0;
+            let pOut = 0;
+
+            // Hide unselected rows
+            checkboxes.forEach(cb => {
+                const tr = cb.closest('tr');
+                if (!cb.checked) {
+                    tr.classList.add('hide-on-print');
+                } else {
+                    hasSelection = true;
+                    // Find transaction data to sum up
+                    const txId = cb.getAttribute('data-id');
+                    const tx = transactions.find(t => t.id === txId);
+                    if(tx) {
+                        if(tx.type === 'income') pIn += tx.amount;
+                        else pOut += tx.amount;
+                    }
+                }
+            });
+
+            if (!hasSelection) {
+                alert('សូមជ្រើសរើសទិន្នន័យយ៉ាងហោចណាស់១ដើម្បី Print!');
+                // Revert hiding
+                checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
+                return;
+            }
+
+            // Update Print Summary amounts
+            document.getElementById('printTotalIncome').innerText = formatMoney(pIn);
+            document.getElementById('printTotalExpense').innerText = formatMoney(pOut);
+            document.getElementById('printTotalBalance').innerText = formatMoney(pIn - pOut);
+
+            // Show summary area for print
+            const printSummary = document.getElementById('print-summary-area');
+            printSummary.classList.remove('hidden');
+            printSummary.style.display = 'block';
+
+            // Trigger print window
+            window.print();
+
+            // Revert changes after print
+            setTimeout(() => {
+                checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
+                printSummary.classList.add('hidden');
+                printSummary.style.display = 'none';
+            }, 500);
+        }
+
+        // Data Management (Export / Import for PC/Wifi share)
+        function saveData() {
+            localStorage.setItem('finance_data', JSON.stringify(transactions));
+        }
+
+        function exportData() {
+            if(transactions.length === 0) {
+                alert('មិនមានទិន្នន័យសម្រាប់ Export ទេ!');
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "Finance_Data_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        // Merge or replace (here we merge and remove duplicates by ID)
+                        const existingIds = new Set(transactions.map(t => t.id));
+                        let addedCount = 0;
+                        importedData.forEach(t => {
+                            if (!existingIds.has(t.id) && t.amount && t.type && t.date) {
+                                transactions.push(t);
+                                addedCount++;
+                            }
+                        });
+                        saveData();
+                        renderApp();
+                        alert(`បានបញ្ចូលទិន្នន័យជោគជ័យ! ទិន្នន័យថ្មីចំនួន ${addedCount} ត្រូវបានបន្ថែម។`);
+                    } else {
+                        alert('ទម្រង់ឯកសារមិនត្រឹមត្រូវទេ!');
+                    }
+                } catch (err) {
+                    alert('មានបញ្ហាក្នុងការអានឯកសារ!');
+                }
+            };
+            reader.readAsText(file);
+            // Reset input so the same file can be selected again
+            event.target.value = '';
+        }
+
+        // Initial render
+        renderApp();
+
+    </script>
+</body>
+</html>
