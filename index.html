@@ -18,6 +18,39 @@
     <meta name="twitter:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយប្រចាំថ្ងៃ">
     <meta name="twitter:image" content="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
 
+    <!-- PWA Meta Tags & Icons -->
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MENG PHANETH">
+    <link rel="apple-touch-icon" href="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
+    
+    <!-- Dynamic Manifest for PWA Single File -->
+    <script>
+        const manifestData = {
+            "name": "MENG PHANETH POLYCLINIC",
+            "short_name": "MP Clinic",
+            "start_url": window.location.href,
+            "display": "standalone",
+            "background_color": "#f3f4f6",
+            "theme_color": "#1e3a8a",
+            "icons": [
+                {
+                    "src": "https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true",
+                    "sizes": "192x192 512x512",
+                    "type": "image/png",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestUrl;
+        document.head.appendChild(link);
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -28,9 +61,13 @@
         }
         
         /* Print Styles */
+        @page {
+            margin: 0; /* Remove browser default header/footer */
+        }
         @media print {
             body {
                 background-color: white;
+                margin: 1.5cm; /* Add proper margin for printed page */
             }
             .hide-on-print {
                 display: none !important;
@@ -95,10 +132,10 @@
                 <div>
                     <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">MENG PHANETH POLYCLINIC</h1>
                     <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</p>
-                </div>
-            </div>
-            
-            <div class="mt-4 md:mt-0 flex gap-2">
+            <div class="mt-4 md:mt-0 flex gap-2 flex-wrap md:justify-end">
+                <button id="installPwaBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow transition hidden">
+                    <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី (Install)
+                </button>
                 <button onclick="exportData()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition">
                     <i class="fas fa-download mr-1"></i> រក្សាទុក (Export PC)
                 </button>
@@ -115,6 +152,7 @@
                 <div>
                     <p class="text-sm text-gray-500 mb-1">ចំណូលសរុប</p>
                     <h2 class="text-2xl font-bold text-green-600" id="totalIncome">$0.00</h2>
+                    <p class="text-sm font-medium text-green-700 mt-1" id="totalIncomeKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-green-100 rounded-full text-green-500">
                     <i class="fas fa-arrow-down fa-lg"></i>
@@ -125,6 +163,7 @@
                 <div>
                     <p class="text-sm text-gray-500 mb-1">ចំណាយសរុប</p>
                     <h2 class="text-2xl font-bold text-red-600" id="totalExpense">$0.00</h2>
+                    <p class="text-sm font-medium text-red-700 mt-1" id="totalExpenseKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-red-100 rounded-full text-red-500">
                     <i class="fas fa-arrow-up fa-lg"></i>
@@ -135,6 +174,7 @@
                 <div>
                     <p class="text-sm text-gray-500 mb-1">សមតុល្យ (សាច់ប្រាក់សល់)</p>
                     <h2 class="text-2xl font-bold text-blue-600" id="totalBalance">$0.00</h2>
+                    <p class="text-sm font-medium text-blue-700 mt-1" id="totalBalanceKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-blue-100 rounded-full text-blue-500">
                     <i class="fas fa-coins fa-lg"></i>
@@ -167,9 +207,18 @@
                             <label class="block text-gray-700 text-sm font-bold mb-2">ការពិពណ៌នា</label>
                             <input type="text" id="tDesc" required placeholder="ឧ. លក់ទំនិញ, ទិញម្ហូប..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">ចំនួនទឹកប្រាក់ ($)</label>
-                            <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                        <div class="mb-6 flex gap-2">
+                            <div class="flex-1">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">ចំនួនទឹកប្រាក់</label>
+                                <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div class="w-24">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">រូបិយប័ណ្ណ</label>
+                                <select id="tCurrency" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                                    <option value="USD">$</option>
+                                    <option value="KHR">៛</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
                             <i class="fas fa-plus-circle"></i> រក្សាទុក
@@ -224,15 +273,18 @@
                 
                 <!-- Print Summary (Only visible when printing) -->
                 <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area">
-                    <p>សរុបចំណូល: <span id="printTotalIncome" class="text-green-600">$0.00</span></p>
-                    <p>សរុបចំណាយ: <span id="printTotalExpense" class="text-red-600">$0.00</span></p>
-                    <p class="mt-2 pt-2 border-t border-gray-400">សមតុល្យសរុប: <span id="printTotalBalance" class="text-blue-600">$0.00</span></p>
+                    <p>សរុបចំណូល: <span id="printTotalIncome" class="text-green-600">$0.00 / 0 ៛</span></p>
+                    <p>សរុបចំណាយ: <span id="printTotalExpense" class="text-red-600">$0.00 / 0 ៛</span></p>
+                    <p class="mt-2 pt-2 border-t border-gray-400">សមតុល្យសរុប: <span id="printTotalBalance" class="text-blue-600">$0.00 / 0 ៛</span></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Exchange Rate
+        const EX_RATE = 4000;
+
         // Set default date to today
         document.getElementById('tDate').valueAsDate = new Date();
 
@@ -240,8 +292,12 @@
         let transactions = JSON.parse(localStorage.getItem('finance_data')) || [];
 
         // Formatting functions
-        const formatMoney = (amount) => {
+        const formatUSD = (amount) => {
             return '$' + parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        };
+        
+        const formatKHR = (amount) => {
+            return Math.round(amount).toLocaleString('en-US') + ' ៛';
         };
 
         const formatDate = (dateString) => {
@@ -255,8 +311,8 @@
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
 
-            let totalIn = 0;
-            let totalOut = 0;
+            let totalInUSD = 0;
+            let totalOutUSD = 0;
 
             // Sort transactions by date descending
             transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -267,12 +323,16 @@
                 emptyState.classList.add('hidden');
                 
                 transactions.forEach(t => {
-                    if(t.type === 'income') totalIn += parseFloat(t.amount);
-                    else totalOut += parseFloat(t.amount);
+                    const tCurrency = t.currency || 'USD'; // fallback for old data
+                    let amtUSD = tCurrency === 'KHR' ? parseFloat(t.amount) / EX_RATE : parseFloat(t.amount);
+
+                    if(t.type === 'income') totalInUSD += amtUSD;
+                    else totalOutUSD += amtUSD;
 
                     const amountColor = t.type === 'income' ? 'text-green-600' : 'text-red-600';
                     const typeText = t.type === 'income' ? 'ចំណូល' : 'ចំណាយ';
                     const amountPrefix = t.type === 'income' ? '+' : '-';
+                    const displayAmount = tCurrency === 'KHR' ? formatKHR(t.amount) : formatUSD(t.amount);
 
                     const tr = document.createElement('tr');
                     tr.className = 'border-b border-gray-200 hover:bg-gray-50';
@@ -288,7 +348,7 @@
                             </span>
                         </td>
                         <td class="py-3 px-4 text-right font-bold ${amountColor}">
-                            ${amountPrefix}${formatMoney(t.amount)}
+                            ${amountPrefix}${displayAmount}
                         </td>
                         <td class="py-3 px-4 text-center hide-on-print">
                             <button onclick="deleteTransaction('${t.id}')" class="text-red-500 hover:text-red-700 transition" title="លុប">
@@ -301,15 +361,21 @@
             }
 
             // Update Summaries
-            const balance = totalIn - totalOut;
-            document.getElementById('totalIncome').innerText = formatMoney(totalIn);
-            document.getElementById('totalExpense').innerText = formatMoney(totalOut);
-            document.getElementById('totalBalance').innerText = formatMoney(balance);
+            const balanceUSD = totalInUSD - totalOutUSD;
+            
+            document.getElementById('totalIncome').innerText = formatUSD(totalInUSD);
+            document.getElementById('totalIncomeKHR').innerText = formatKHR(totalInUSD * EX_RATE);
+            
+            document.getElementById('totalExpense').innerText = formatUSD(totalOutUSD);
+            document.getElementById('totalExpenseKHR').innerText = formatKHR(totalOutUSD * EX_RATE);
+            
+            document.getElementById('totalBalance').innerText = formatUSD(balanceUSD);
+            document.getElementById('totalBalanceKHR').innerText = formatKHR(balanceUSD * EX_RATE);
             
             // For print summary
-            document.getElementById('printTotalIncome').innerText = formatMoney(totalIn);
-            document.getElementById('printTotalExpense').innerText = formatMoney(totalOut);
-            document.getElementById('printTotalBalance').innerText = formatMoney(balance);
+            document.getElementById('printTotalIncome').innerText = `${formatUSD(totalInUSD)} / ${formatKHR(totalInUSD * EX_RATE)}`;
+            document.getElementById('printTotalExpense').innerText = `${formatUSD(totalOutUSD)} / ${formatKHR(totalOutUSD * EX_RATE)}`;
+            document.getElementById('printTotalBalance').innerText = `${formatUSD(balanceUSD)} / ${formatKHR(balanceUSD * EX_RATE)}`;
 
             // Reset Select All checkbox
             document.getElementById('selectAll').checked = false;
@@ -323,13 +389,15 @@
             const type = document.querySelector('input[name="tType"]:checked').value;
             const desc = document.getElementById('tDesc').value;
             const amount = document.getElementById('tAmount').value;
+            const currency = document.getElementById('tCurrency').value;
 
             const newTx = {
                 id: Date.now().toString(),
                 date,
                 type,
                 desc,
-                amount: parseFloat(amount)
+                amount: parseFloat(amount),
+                currency: currency
             };
 
             transactions.push(newTx);
@@ -360,8 +428,8 @@
             let hasSelection = false;
 
             // Recalculate totals for printed items
-            let pIn = 0;
-            let pOut = 0;
+            let pInUSD = 0;
+            let pOutUSD = 0;
 
             // Hide unselected rows
             checkboxes.forEach(cb => {
@@ -374,8 +442,10 @@
                     const txId = cb.getAttribute('data-id');
                     const tx = transactions.find(t => t.id === txId);
                     if(tx) {
-                        if(tx.type === 'income') pIn += tx.amount;
-                        else pOut += tx.amount;
+                        const tCurrency = tx.currency || 'USD';
+                        let amtUSD = tCurrency === 'KHR' ? parseFloat(tx.amount) / EX_RATE : parseFloat(tx.amount);
+                        if(tx.type === 'income') pInUSD += amtUSD;
+                        else pOutUSD += amtUSD;
                     }
                 }
             });
@@ -388,9 +458,9 @@
             }
 
             // Update Print Summary amounts
-            document.getElementById('printTotalIncome').innerText = formatMoney(pIn);
-            document.getElementById('printTotalExpense').innerText = formatMoney(pOut);
-            document.getElementById('printTotalBalance').innerText = formatMoney(pIn - pOut);
+            document.getElementById('printTotalIncome').innerText = `${formatUSD(pInUSD)} / ${formatKHR(pInUSD * EX_RATE)}`;
+            document.getElementById('printTotalExpense').innerText = `${formatUSD(pOutUSD)} / ${formatKHR(pOutUSD * EX_RATE)}`;
+            document.getElementById('printTotalBalance').innerText = `${formatUSD(pInUSD - pOutUSD)} / ${formatKHR((pInUSD - pOutUSD) * EX_RATE)}`;
 
             // Show summary area for print
             const printSummary = document.getElementById('print-summary-area');
@@ -462,6 +532,59 @@
 
         // Initial render
         renderApp();
+
+        // PWA Implementation (Service Worker & Install Prompt)
+        if ('serviceWorker' in navigator) {
+            // Inline Service Worker script to keep everything in one file
+            const swCode = `
+                self.addEventListener('install', event => self.skipWaiting());
+                self.addEventListener('activate', event => event.waitUntil(clients.claim()));
+                self.addEventListener('fetch', event => {
+                    // Simple pass-through fetch to satisfy PWA network requirements
+                    event.respondWith(fetch(event.request).catch(error => {
+                        console.error('Network request failed:', error);
+                    }));
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swUrl).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Handle PWA Install Prompt
+        let deferredPrompt;
+        const installBtn = document.getElementById('installPwaBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show the custom install button
+            if(installBtn) installBtn.classList.remove('hidden');
+        });
+
+        if(installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(\`User install choice: \${outcome}\`);
+                    deferredPrompt = null;
+                    installBtn.classList.add('hidden');
+                }
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if(installBtn) installBtn.classList.add('hidden');
+            console.log('PWA was installed successfully!');
+        });
 
     </script>
 </body>
