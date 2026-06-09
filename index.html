@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
@@ -113,20 +117,31 @@
             .print-header-subtitle {
                 font-size: 16px;
                 color: #555;
+                margin: 5px 0 0 0;
             }
-        </style>
-    </head>
-    <body class="p-4 md:p-8">
-        <div class="max-w-7xl mx-auto">
-            <header class="flex flex-col md:flex-row justify-between items-center mb-6 hide-on-print bg-white p-4 rounded-xl shadow-sm">
-                <div class="flex items-center gap-4">
-                    <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Clinic Logo" class="w-16 h-16 object-contain">
+        }
+
+        .print-header-container {
+            display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 hide-on-print bg-white p-4 rounded-xl shadow-sm">
+            <div class="flex items-center gap-4">
+                <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Clinic Logo" class="w-16 h-16 object-contain">
+                <div>
+                    <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">MENG PHANETH POLYCLINIC</h1>
+                    <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</p>
             <div class="mt-4 md:mt-0 flex gap-2 flex-wrap md:justify-end">
                 <button id="installPwaBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow transition hidden">
                     <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី (Install)
                 </button>
-                <button onclick="exportData()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition font-bold border-2 border-green-700">
-                    <i class="fas fa-download mr-1"></i> រក្សាទុក (Export Backup)
+                <button onclick="exportData()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition">
+                    <i class="fas fa-download mr-1"></i> រក្សាទុក (Export PC)
                 </button>
                 <input type="file" id="importFile" accept=".json" class="hidden" onchange="importData(event)">
                 <button onclick="document.getElementById('importFile').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition">
@@ -134,17 +149,6 @@
                 </button>
             </div>
         </header>
-
-        <!-- Warning Messages -->
-        <div id="storageWarning" class="hidden hide-on-print bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
-            <p class="font-bold"><i class="fas fa-exclamation-triangle"></i> បម្រាមសុវត្ថិភាព!</p>
-            <p>កម្មវិធីមិនអាចរក្សាទុកទិន្នន័យដោយស្វ័យប្រវត្តិបានទេ (អាចដោយសារអ្នកកំពុងប្រើ Incognito Mode ឬ Browser ទប់ស្កាត់)។ សូមចុច <b>"រក្សាទុក (Export Backup)"</b> ជាដាច់ខាត មុនពេលបិទកម្មវិធី ដើម្បីកុំឲ្យបាត់ទិន្នន័យ។</p>
-        </div>
-        
-        <div class="hide-on-print bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-6 text-sm flex items-start gap-2 shadow-sm">
-            <i class="fas fa-info-circle mt-1 text-yellow-600"></i>
-            <p><b>ចំណាំ៖</b> ទិន្នន័យត្រូវបានរក្សាទុកជាបណ្តោះអាសន្នក្នុង Browser ប៉ុណ្ណោះ។ ដើម្បីធានាមិនឱ្យបាត់បង់ទិន្នន័យ (ឬផ្ទេរទៅកុំព្យូទ័រផ្សេង) សូមទម្លាប់ចុចប៊ូតុង <b class="text-green-700">រក្សាទុក (Export Backup)</b> រាល់ពេលបញ្ចប់ការកត់ត្រាប្រចាំថ្ងៃ។</p>
-        </div>
 
         <!-- Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
@@ -288,35 +292,8 @@
         // Set default date to today
         document.getElementById('tDate').valueAsDate = new Date();
 
-        // Safe Local Storage Initialization
-        let transactions = [];
-        try {
-            const savedData = localStorage.getItem('finance_data');
-            // Check if savedData exists and is not null/undefined string
-            if (savedData && savedData !== "undefined" && savedData !== "null") {
-                transactions = JSON.parse(savedData);
-                // Ensure the parsed data is an array
-                if (!Array.isArray(transactions)) {
-                    transactions = [];
-                }
-            }
-        } catch (error) {
-            console.error('Local Storage is blocked or unavailable:', error);
-            // Delay showing the warning until DOM is ready just in case
-            window.addEventListener('DOMContentLoaded', () => {
-                const warningElement = document.getElementById('storageWarning');
-                if(warningElement) warningElement.classList.remove('hidden');
-            });
-        }
-
-        // Auto-save backup before user leaves or refreshes the page
-        window.addEventListener('beforeunload', () => {
-            if (transactions && transactions.length > 0) {
-                try {
-                    localStorage.setItem('finance_data', JSON.stringify(transactions));
-                } catch(e) {}
-            }
-        });
+        // Initialize state from local storage
+        let transactions = JSON.parse(localStorage.getItem('finance_data')) || [];
 
         // Formatting functions
         const formatUSD = (amount) => {
@@ -507,16 +484,7 @@
 
         // Data Management (Export / Import for PC/Wifi share)
         function saveData() {
-            try {
-                localStorage.setItem('finance_data', JSON.stringify(transactions));
-                // Show a brief success indicator (optional)
-                console.log("Saved to LocalStorage automatically.");
-            } catch (error) {
-                console.error('Failed to save data:', error);
-                const storageWarning = document.getElementById('storageWarning');
-                if (storageWarning) storageWarning.classList.remove('hidden');
-                alert('បរាជ័យក្នុងការរក្សាទុកដោយស្វ័យប្រវត្តិ! សូមចុចប៊ូតុង រក្សាទុក (Export Backup) ជាបន្ទាន់ដើម្បីការពារការបាត់ទិន្នន័យ។');
-            }
+            localStorage.setItem('finance_data', JSON.stringify(transactions));
         }
 
         function exportData() {
