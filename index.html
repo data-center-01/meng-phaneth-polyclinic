@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="km">
 <head>
@@ -136,16 +132,11 @@
                 <div>
                     <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">MENG PHANETH POLYCLINIC</h1>
                     <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</p>
+                </div>
+            </div>
             <div class="mt-4 md:mt-0 flex gap-2 flex-wrap md:justify-end">
                 <button id="installPwaBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow transition hidden">
                     <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី (Install)
-                </button>
-                <button onclick="exportData()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition">
-                    <i class="fas fa-download mr-1"></i> រក្សាទុក (Export PC)
-                </button>
-                <input type="file" id="importFile" accept=".json" class="hidden" onchange="importData(event)">
-                <button onclick="document.getElementById('importFile').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition">
-                    <i class="fas fa-upload mr-1"></i> បញ្ចូល (Import)
                 </button>
             </div>
         </header>
@@ -191,7 +182,7 @@
             <div class="lg:col-span-1 hide-on-print">
                 <div class="bg-white rounded-xl shadow-sm p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">បន្ថែមប្រតិបត្តិការថ្មី</h3>
-                    <form id="transactionForm" onsubmit="addTransaction(event)">
+                    <form id="transactionForm">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">កាលបរិច្ឆេទ</label>
                             <input type="date" id="tDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
@@ -285,15 +276,89 @@
         </div>
     </div>
 
+    <!-- Custom Modal for Alerts & Confirmation -->
+    <div id="customModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 transition-opacity">
+        <div class="bg-white rounded-xl shadow-lg p-6 w-11/12 max-w-sm text-center transform scale-95 transition-transform duration-200">
+            <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-2">សារ</h3>
+            <p id="modalMessage" class="text-gray-600 mb-6"></p>
+            <div id="modalButtons" class="flex justify-center gap-4">
+                <!-- Buttons will be injected here dynamically -->
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Custom Modal Logic
+        function showModal(title, message, type = 'alert', onConfirm = null) {
+            const modal = document.getElementById('customModal');
+            const titleEl = document.getElementById('modalTitle');
+            const messageEl = document.getElementById('modalMessage');
+            const buttonsEl = document.getElementById('modalButtons');
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+            buttonsEl.innerHTML = '';
+
+            if (type === 'alert') {
+                const btn = document.createElement('button');
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition w-full';
+                btn.innerText = 'យល់ព្រម (OK)';
+                btn.onclick = () => closeModal();
+                buttonsEl.appendChild(btn);
+            } else if (type === 'confirm') {
+                const btnCancel = document.createElement('button');
+                btnCancel.className = 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow transition w-full';
+                btnCancel.innerText = 'បោះបង់ (Cancel)';
+                btnCancel.onclick = () => closeModal();
+
+                const btnConfirm = document.createElement('button');
+                btnConfirm.className = 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow transition w-full';
+                btnConfirm.innerText = 'យល់ព្រម (Confirm)';
+                btnConfirm.onclick = () => {
+                    closeModal();
+                    if(onConfirm) onConfirm();
+                };
+
+                buttonsEl.appendChild(btnCancel);
+                buttonsEl.appendChild(btnConfirm);
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
         // Exchange Rate
         const EX_RATE = 4000;
 
-        // Set default date to today
-        document.getElementById('tDate').valueAsDate = new Date();
+        // Set default date to today safely
+        const today = new Date();
+        const offset = today.getTimezoneOffset() * 60000;
+        document.getElementById('tDate').value = (new Date(today - offset)).toISOString().split('T')[0];
 
-        // Initialize state from local storage
-        let transactions = JSON.parse(localStorage.getItem('finance_data')) || [];
+        // Initialize state from local storage securely
+        let transactions = [];
+        try {
+            const storedData = localStorage.getItem('finance_data');
+            if (storedData) {
+                transactions = JSON.parse(storedData);
+                if (!Array.isArray(transactions)) transactions = [];
+            }
+        } catch (e) {
+            console.error("Error loading data", e);
+            transactions = [];
+        }
 
         // Formatting functions
         const formatUSD = (amount) => {
@@ -305,8 +370,11 @@
         };
 
         const formatDate = (dateString) => {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            return new Date(dateString).toLocaleDateString('en-GB', options);
+            if (!dateString) return '';
+            try {
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                return new Date(dateString).toLocaleDateString('en-GB', options);
+            } catch(e) { return dateString; }
         };
 
         // Render functions
@@ -318,8 +386,12 @@
             let totalInUSD = 0;
             let totalOutUSD = 0;
 
-            // Sort transactions by date descending
-            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // Sort transactions by date descending safely
+            transactions.sort((a, b) => {
+                const dateA = a.date ? new Date(a.date) : new Date(0);
+                const dateB = b.date ? new Date(b.date) : new Date(0);
+                return dateB - dateA;
+            });
 
             if (transactions.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -386,14 +458,20 @@
         }
 
         // Action Functions
-        function addTransaction(e) {
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const date = document.getElementById('tDate').value;
-            const type = document.querySelector('input[name="tType"]:checked').value;
+            const typeEl = document.querySelector('input[name="tType"]:checked');
+            const type = typeEl ? typeEl.value : 'income';
             const desc = document.getElementById('tDesc').value;
             const amount = document.getElementById('tAmount').value;
             const currency = document.getElementById('tCurrency').value;
+
+            if(!date || !desc || !amount) {
+                showModal('កំហុស', 'សូមបំពេញព័ត៌មានអោយបានគ្រប់គ្រាន់!');
+                return;
+            }
 
             const newTx = {
                 id: Date.now().toString(),
@@ -411,14 +489,14 @@
             // Reset form partly
             document.getElementById('tDesc').value = '';
             document.getElementById('tAmount').value = '';
-        }
+        });
 
         function deleteTransaction(id) {
-            if(confirm('តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?')) {
+            showModal('បញ្ជាក់ការលុប', 'តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?', 'confirm', () => {
                 transactions = transactions.filter(t => t.id !== id);
                 saveData();
                 renderApp();
-            }
+            });
         }
 
         function toggleSelectAll() {
@@ -455,7 +533,7 @@
             });
 
             if (!hasSelection) {
-                alert('សូមជ្រើសរើសទិន្នន័យយ៉ាងហោចណាស់១ដើម្បី Print!');
+                showModal('ជូនដំណឹង', 'សូមជ្រើសរើសទិន្នន័យយ៉ាងហោចណាស់១ដើម្បី Print!');
                 // Revert hiding
                 checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
                 return;
@@ -482,56 +560,9 @@
             }, 500);
         }
 
-        // Data Management (Export / Import for PC/Wifi share)
+        // Data Management
         function saveData() {
             localStorage.setItem('finance_data', JSON.stringify(transactions));
-        }
-
-        function exportData() {
-            if(transactions.length === 0) {
-                alert('មិនមានទិន្នន័យសម្រាប់ Export ទេ!');
-                return;
-            }
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "Finance_Data_" + new Date().toISOString().slice(0,10) + ".json");
-            document.body.appendChild(downloadAnchorNode); // required for firefox
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        // Merge or replace (here we merge and remove duplicates by ID)
-                        const existingIds = new Set(transactions.map(t => t.id));
-                        let addedCount = 0;
-                        importedData.forEach(t => {
-                            if (!existingIds.has(t.id) && t.amount && t.type && t.date) {
-                                transactions.push(t);
-                                addedCount++;
-                            }
-                        });
-                        saveData();
-                        renderApp();
-                        alert(`បានបញ្ចូលទិន្នន័យជោគជ័យ! ទិន្នន័យថ្មីចំនួន ${addedCount} ត្រូវបានបន្ថែម។`);
-                    } else {
-                        alert('ទម្រង់ឯកសារមិនត្រឹមត្រូវទេ!');
-                    }
-                } catch (err) {
-                    alert('មានបញ្ហាក្នុងការអានឯកសារ!');
-                }
-            };
-            reader.readAsText(file);
-            // Reset input so the same file can be selected again
-            event.target.value = '';
         }
 
         // Initial render
@@ -578,7 +609,7 @@
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
-                    console.log(\`User install choice: \${outcome}\`);
+                    console.log(`User install choice: ${outcome}`);
                     deferredPrompt = null;
                     installBtn.classList.add('hidden');
                 }
