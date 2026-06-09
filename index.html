@@ -10,12 +10,12 @@
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="MENG PHANETH POLYCLINIC">
-    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយប្រចាំថ្ងៃ - MENG PHANETH POLYCLINIC">
+    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញប្រចាំខែ - MENG PHANETH POLYCLINIC">
     <meta property="og:image" content="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MENG PHANETH POLYCLINIC">
-    <meta name="twitter:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយប្រចាំថ្ងៃ">
+    <meta name="twitter:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញប្រចាំខែ">
     <meta name="twitter:image" content="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
 
     <!-- PWA Meta Tags & Icons -->
@@ -61,118 +61,98 @@
         }
         
         /* Print Styles */
-        @page {
-            margin: 0; /* Remove browser default header/footer */
-        }
+        @page { margin: 0; }
         @media print {
-            body {
-                background-color: white;
-                margin: 1.5cm; /* Add proper margin for printed page */
-            }
-            .hide-on-print {
-                display: none !important;
-            }
-            #print-area {
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                box-shadow: none;
-            }
-            .print-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .print-table th, .print-table td {
-                border: 1px solid #000;
-                padding: 8px;
-            }
-            
+            body { background-color: white; margin: 1.5cm; }
+            .hide-on-print { display: none !important; }
+            #print-area { width: 100%; margin: 0; padding: 0; box-shadow: none; }
+            .print-table { width: 100%; border-collapse: collapse; }
+            .print-table th, .print-table td { border: 1px solid #000; padding: 8px; }
             .print-header-container {
-                display: flex !important;
-                align-items: center;
-                justify-content: center;
-                gap: 15px;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #333;
-                padding-bottom: 15px;
+                display: flex !important; align-items: center; justify-content: center;
+                gap: 15px; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 15px;
             }
-            .print-header-logo {
-                width: 60px;
-                height: 60px;
-                object-fit: contain;
-            }
-            .print-header-text {
-                text-align: center;
-            }
-            .print-header-title {
-                font-size: 24px;
-                font-weight: bold;
-                color: #1e3a8a; /* Blue color matching the theme */
-                margin: 0;
-            }
-            .print-header-subtitle {
-                font-size: 16px;
-                color: #555;
-                margin: 5px 0 0 0;
-            }
+            .print-header-logo { width: 60px; height: 60px; object-fit: contain; }
+            .print-header-text { text-align: center; }
+            .print-header-title { font-size: 24px; font-weight: bold; color: #1e3a8a; margin: 0; }
+            .print-header-subtitle { font-size: 16px; color: #555; margin: 5px 0 0 0; }
         }
-
-        .print-header-container {
-            display: none;
-        }
+        .print-header-container { display: none; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <header class="flex flex-col md:flex-row justify-between items-center mb-8 hide-on-print bg-white p-4 rounded-xl shadow-sm">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-6 hide-on-print bg-white p-4 rounded-xl shadow-sm">
             <div class="flex items-center gap-4">
                 <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Clinic Logo" class="w-16 h-16 object-contain">
                 <div>
                     <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">MENG PHANETH POLYCLINIC</h1>
-                    <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</p>
+                    <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញ</p>
                 </div>
             </div>
             <div class="mt-4 md:mt-0 flex gap-2 flex-wrap md:justify-end">
                 <button id="installPwaBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow transition hidden">
-                    <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី (Install)
+                    <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី
                 </button>
             </div>
         </header>
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
-            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500 flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500 mb-1">ចំណូលសរុប</p>
-                    <h2 class="text-2xl font-bold text-green-600" id="totalIncome">$0.00</h2>
-                    <p class="text-sm font-medium text-green-700 mt-1" id="totalIncomeKHR">0 ៛</p>
-                </div>
-                <div class="p-3 bg-green-100 rounded-full text-green-500">
-                    <i class="fas fa-arrow-down fa-lg"></i>
+        <!-- Filters (Month & Category Sheets) -->
+        <div class="mb-6 bg-white p-4 rounded-xl border border-gray-200 hide-on-print shadow-sm">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                <h2 class="text-lg font-bold text-blue-900"><i class="fas fa-filter mr-2"></i>ជម្រើសរបាយការណ៍ (Filters)</h2>
+                <div class="flex items-center gap-2">
+                    <label class="text-gray-700 font-bold">ជ្រើសរើសខែ៖</label>
+                    <input type="month" id="monthFilter" class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50" onchange="renderApp()">
                 </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500 flex items-center justify-between">
+            <!-- Category Tabs (Sheets) -->
+            <div class="flex space-x-2 border-b border-gray-200 overflow-x-auto pt-2">
+                <button onclick="setCategoryFilter('All')" id="tab-All" class="px-4 py-2 font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition"><i class="fas fa-layer-group mr-1"></i>ទាំងអស់ (All)</button>
+                <button onclick="setCategoryFilter('គ្លីនិក')" id="tab-គ្លីនិក" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-clinic-medical mr-1"></i>គ្លីនិក</button>
+                <button onclick="setCategoryFilter('បុគ្គលិក')" id="tab-បុគ្គលិក" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-users mr-1"></i>បុគ្គលិក</button>
+                <button onclick="setCategoryFilter('ផ្សេងៗ')" id="tab-ផ្សេងៗ" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-ellipsis-h mr-1"></i>ផ្សេងៗ</button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
+            <!-- Monthly Income -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-green-500 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 mb-1">ចំណាយសរុប</p>
-                    <h2 class="text-2xl font-bold text-red-600" id="totalExpense">$0.00</h2>
-                    <p class="text-sm font-medium text-red-700 mt-1" id="totalExpenseKHR">0 ៛</p>
+                    <p class="text-sm text-gray-500 mb-1">សរុបចំណូល ប្រចាំខែ</p>
+                    <h2 class="text-2xl font-bold text-green-600" id="monthlyIncome">$0.00</h2>
+                    <p class="text-sm font-medium text-green-700 mt-1" id="monthlyIncomeKHR">0 ៛</p>
+                </div>
+                <div class="p-3 bg-green-100 rounded-full text-green-500">
+                    <i class="fas fa-hand-holding-usd fa-lg"></i>
+                </div>
+            </div>
+            
+            <!-- Monthly Expense -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-red-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">សរុបការចំណាយ ប្រចាំខែ</p>
+                    <h2 class="text-2xl font-bold text-red-600" id="monthlyExpense">$0.00</h2>
+                    <p class="text-sm font-medium text-red-700 mt-1" id="monthlyExpenseKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-red-100 rounded-full text-red-500">
-                    <i class="fas fa-arrow-up fa-lg"></i>
+                    <i class="fas fa-file-invoice-dollar fa-lg"></i>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500 flex items-center justify-between">
+            <!-- Monthly Profit -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-blue-500 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 mb-1">សមតុល្យ (សាច់ប្រាក់សល់)</p>
-                    <h2 class="text-2xl font-bold text-blue-600" id="totalBalance">$0.00</h2>
-                    <p class="text-sm font-medium text-blue-700 mt-1" id="totalBalanceKHR">0 ៛</p>
+                    <p class="text-sm text-gray-500 mb-1">សរុបចំណេញ ប្រចាំខែ</p>
+                    <h2 class="text-2xl font-bold text-blue-600" id="monthlyProfit">$0.00</h2>
+                    <p class="text-sm font-medium text-blue-700 mt-1" id="monthlyProfitKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-blue-100 rounded-full text-blue-500">
-                    <i class="fas fa-coins fa-lg"></i>
+                    <i class="fas fa-chart-line fa-lg"></i>
                 </div>
             </div>
         </div>
@@ -180,43 +160,64 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Column: Form -->
             <div class="lg:col-span-1 hide-on-print">
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">បន្ថែមប្រតិបត្តិការថ្មី</h3>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>បន្ថែមប្រតិបត្តិការថ្មី</h3>
                     <form id="transactionForm">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">កាលបរិច្ឆេទ</label>
-                            <input type="date" id="tDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                            <input type="date" id="tDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50">
                         </div>
+                        
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">ប្រភេទ</label>
-                            <div class="flex gap-4">
+                            <div class="flex gap-4 p-2 bg-gray-50 rounded border">
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="tType" value="income" required class="mr-2 h-4 w-4 text-green-600"> ចំណូល
+                                    <input type="radio" name="tType" value="income" required class="mr-2 h-4 w-4 text-green-600" onchange="toggleFormFields()" checked> ចំណូល
                                 </label>
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="tType" value="expense" required class="mr-2 h-4 w-4 text-red-600"> ចំណាយ
+                                    <input type="radio" name="tType" value="expense" required class="mr-2 h-4 w-4 text-red-600" onchange="toggleFormFields()"> ចំណាយ
                                 </label>
                             </div>
                         </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ក្រុមចំណាត់ថ្នាក់</label>
+                            <select id="tCategory" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50">
+                                <option value="គ្លីនិក">គ្លីនិក (ចំណូល-ចំណាយ / ថ្នាំពេទ្យ)</option>
+                                <option value="បុគ្គលិក">បុគ្គលិក (ហូបចុក / ផ្គត់ផ្គង់)</option>
+                                <option value="ផ្សេងៗ">ផ្សេងៗ (ទូទៅ)</option>
+                            </select>
+                        </div>
+
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">ការពិពណ៌នា</label>
-                            <input type="text" id="tDesc" required placeholder="ឧ. លក់ទំនិញ, ទិញម្ហូប..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                            <input type="text" id="tDesc" required placeholder="ឧ. លក់ថ្នាំ, ទិញម្ហូប..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
                         </div>
+
+                        <!-- Cost Price (Shown only for Income) -->
+                        <div class="mb-4 bg-blue-50 p-3 rounded border border-blue-100" id="costGroup">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ប្រាក់ថ្លៃដើមថ្នាំ (Cost Price)</label>
+                            <div class="flex gap-2">
+                                <input type="number" step="0.01" id="tCost" placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">* ទុកទទេ ឬដាក់ 0 ប្រសិនបើគ្មានថ្លៃដើម</p>
+                        </div>
+
                         <div class="mb-6 flex gap-2">
                             <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">ចំនួនទឹកប្រាក់</label>
-                                <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" id="amountLabel">តម្លៃត្រូវលក់ចេញ (Selling Price)</label>
+                                <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 font-bold">
                             </div>
                             <div class="w-24">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">រូបិយប័ណ្ណ</label>
-                                <select id="tCurrency" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                                <select id="tCurrency" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 font-bold">
                                     <option value="USD">$</option>
                                     <option value="KHR">៛</option>
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                            <i class="fas fa-plus-circle"></i> រក្សាទុក
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow transition flex justify-center items-center gap-2">
+                            <i class="fas fa-save"></i> រក្សាទុកទិន្នន័យ
                         </button>
                     </form>
                 </div>
@@ -229,15 +230,15 @@
                     <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Logo" class="print-header-logo">
                     <div class="print-header-text">
                         <h2 class="print-header-title">MENG PHANETH POLYCLINIC</h2>
-                        <p class="print-header-subtitle">របាយការណ៍ចំណូលចំណាយ</p>
+                        <p class="print-header-subtitle">របាយការណ៍ចំណូលចំណាយ ប្រចាំខែ <span id="printMonthLabel"></span> <span id="printCategoryLabel" class="text-blue-600 font-bold ml-1"></span></p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                     <div class="p-4 border-b flex justify-between items-center hide-on-print bg-gray-50">
-                        <h3 class="text-xl font-bold text-gray-800">បញ្ជីប្រតិបត្តិការ</h3>
-                        <button onclick="printSelected()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded shadow transition text-sm">
-                            <i class="fas fa-print mr-1"></i> Print ទិន្នន័យដែលបានជ្រើសរើស
+                        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-list-alt text-gray-500 mr-2"></i>បញ្ជីប្រតិបត្តិការ</h3>
+                        <button onclick="printSelected()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded shadow transition text-sm flex items-center gap-2">
+                            <i class="fas fa-print"></i> Print (ព្រីន)
                         </button>
                     </div>
                     
@@ -250,7 +251,7 @@
                                     </th>
                                     <th class="py-3 px-4">កាលបរិច្ឆេទ</th>
                                     <th class="py-3 px-4">ការពិពណ៌នា</th>
-                                    <th class="py-3 px-4">ប្រភេទ</th>
+                                    <th class="py-3 px-4 text-center">ក្រុម/ប្រភេទ</th>
                                     <th class="py-3 px-4 text-right">ទឹកប្រាក់</th>
                                     <th class="py-3 px-4 text-center hide-on-print">សកម្មភាព</th>
                                 </tr>
@@ -259,9 +260,9 @@
                                 <!-- Data will be rendered here via JS -->
                             </tbody>
                         </table>
-                        <div id="emptyState" class="text-center py-8 text-gray-500 hidden hide-on-print">
-                            <i class="fas fa-folder-open text-4xl mb-3 opacity-50"></i>
-                            <p>មិនទាន់មានទិន្នន័យនៅឡើយទេ</p>
+                        <div id="emptyState" class="text-center py-12 text-gray-400 hidden hide-on-print">
+                            <i class="fas fa-box-open text-5xl mb-4 opacity-50"></i>
+                            <p class="text-lg">មិនមានទិន្នន័យសម្រាប់ខែនេះទេ</p>
                         </div>
                     </div>
                 </div>
@@ -270,7 +271,7 @@
                 <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area">
                     <p>សរុបចំណូល: <span id="printTotalIncome" class="text-green-600">$0.00 / 0 ៛</span></p>
                     <p>សរុបចំណាយ: <span id="printTotalExpense" class="text-red-600">$0.00 / 0 ៛</span></p>
-                    <p class="mt-2 pt-2 border-t border-gray-400">សមតុល្យសរុប: <span id="printTotalBalance" class="text-blue-600">$0.00 / 0 ៛</span></p>
+                    <p class="mt-2 pt-2 border-t border-gray-400">ប្រាក់ចំណេញសរុប: <span id="printTotalProfit" class="text-blue-600">$0.00 / 0 ៛</span></p>
                 </div>
             </div>
         </div>
@@ -279,7 +280,8 @@
     <!-- Custom Modal for Alerts & Confirmation -->
     <div id="customModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 transition-opacity">
         <div class="bg-white rounded-xl shadow-lg p-6 w-11/12 max-w-sm text-center transform scale-95 transition-transform duration-200">
-            <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-2">សារ</h3>
+            <div id="modalIcon" class="mb-4 text-4xl"></div>
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-800 mb-2">សារ</h3>
             <p id="modalMessage" class="text-gray-600 mb-6"></p>
             <div id="modalButtons" class="flex justify-center gap-4">
                 <!-- Buttons will be injected here dynamically -->
@@ -294,25 +296,28 @@
             const titleEl = document.getElementById('modalTitle');
             const messageEl = document.getElementById('modalMessage');
             const buttonsEl = document.getElementById('modalButtons');
+            const iconEl = document.getElementById('modalIcon');
 
             titleEl.innerText = title;
             messageEl.innerText = message;
             buttonsEl.innerHTML = '';
 
             if (type === 'alert') {
+                iconEl.innerHTML = '<i class="fas fa-exclamation-circle text-yellow-500"></i>';
                 const btn = document.createElement('button');
-                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition w-full';
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow transition w-full font-bold';
                 btn.innerText = 'យល់ព្រម (OK)';
                 btn.onclick = () => closeModal();
                 buttonsEl.appendChild(btn);
             } else if (type === 'confirm') {
+                iconEl.innerHTML = '<i class="fas fa-question-circle text-red-500"></i>';
                 const btnCancel = document.createElement('button');
-                btnCancel.className = 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow transition w-full';
+                btnCancel.className = 'bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded shadow transition w-full font-bold';
                 btnCancel.innerText = 'បោះបង់ (Cancel)';
                 btnCancel.onclick = () => closeModal();
 
                 const btnConfirm = document.createElement('button');
-                btnConfirm.className = 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow transition w-full';
+                btnConfirm.className = 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow transition w-full font-bold';
                 btnConfirm.innerText = 'យល់ព្រម (Confirm)';
                 btnConfirm.onclick = () => {
                     closeModal();
@@ -339,13 +344,32 @@
             }, 200);
         }
 
+        // Form toggle logic
+        function toggleFormFields() {
+            const type = document.querySelector('input[name="tType"]:checked').value;
+            const costGroup = document.getElementById('costGroup');
+            const amountLabel = document.getElementById('amountLabel');
+            
+            if(type === 'income') {
+                costGroup.classList.remove('hidden');
+                amountLabel.innerText = 'តម្លៃត្រូវលក់ចេញ (Selling Price)';
+            } else {
+                costGroup.classList.add('hidden');
+                amountLabel.innerText = 'ទឹកប្រាក់ចំណាយ (Expense Amount)';
+                document.getElementById('tCost').value = '';
+            }
+        }
+
         // Exchange Rate
         const EX_RATE = 4000;
 
-        // Set default date to today safely
+        // Set default dates safely
         const today = new Date();
         const offset = today.getTimezoneOffset() * 60000;
-        document.getElementById('tDate').value = (new Date(today - offset)).toISOString().split('T')[0];
+        const localISOTime = (new Date(today - offset)).toISOString();
+        
+        document.getElementById('tDate').value = localISOTime.split('T')[0];
+        document.getElementById('monthFilter').value = localISOTime.substring(0, 7); // YYYY-MM
 
         // Initialize state from local storage securely
         let transactions = [];
@@ -377,14 +401,44 @@
             } catch(e) { return dateString; }
         };
 
+        // Global State for Category Sheet
+        let currentCategoryFilter = 'All';
+
+        function setCategoryFilter(category) {
+            currentCategoryFilter = category;
+            renderApp();
+        }
+
         // Render functions
         function renderApp() {
             const tbody = document.getElementById('tableBody');
             const emptyState = document.getElementById('emptyState');
+            const monthFilter = document.getElementById('monthFilter').value; // 'YYYY-MM'
+            
+            // Set Print label
+            document.getElementById('printMonthLabel').innerText = monthFilter;
+            document.getElementById('printCategoryLabel').innerText = currentCategoryFilter === 'All' ? '(គ្រប់ក្រុមទាំងអស់)' : `(ក្រុម: ${currentCategoryFilter})`;
+            
+            // Update Tab UI
+            const tabs = ['All', 'គ្លីនិក', 'បុគ្គលិក', 'ផ្សេងៗ'];
+            tabs.forEach(tab => {
+                const tabEl = document.getElementById(`tab-${tab}`);
+                if(tabEl) {
+                    if(tab === currentCategoryFilter) {
+                        tabEl.className = "px-4 py-2 font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition";
+                    } else {
+                        tabEl.className = "px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition";
+                    }
+                }
+            });
+
             tbody.innerHTML = '';
 
-            let totalInUSD = 0;
-            let totalOutUSD = 0;
+            let monthlyRevenueUSD = 0;
+            let monthlyExpenseUSD = 0;
+            let monthlyCostOfGoodsUSD = 0;
+            
+            let filteredCount = 0;
 
             // Sort transactions by date descending safely
             transactions.sort((a, b) => {
@@ -393,65 +447,107 @@
                 return dateB - dateA;
             });
 
-            if (transactions.length === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
+            transactions.forEach(t => {
+                const tMonth = t.date ? t.date.substring(0, 7) : '';
+                const categoryLabel = t.category || 'គ្លីនិក'; // Fallback for old data
                 
-                transactions.forEach(t => {
-                    const tCurrency = t.currency || 'USD'; // fallback for old data
+                // Only process items for the selected month AND selected category sheet
+                if (tMonth === monthFilter && (currentCategoryFilter === 'All' || categoryLabel === currentCategoryFilter)) {
+                    filteredCount++;
+                    
+                    const tCurrency = t.currency || 'USD';
                     let amtUSD = tCurrency === 'KHR' ? parseFloat(t.amount) / EX_RATE : parseFloat(t.amount);
+                    let costUSD = t.costPrice ? (tCurrency === 'KHR' ? parseFloat(t.costPrice) / EX_RATE : parseFloat(t.costPrice)) : 0;
 
-                    if(t.type === 'income') totalInUSD += amtUSD;
-                    else totalOutUSD += amtUSD;
+                    let amountColor = '';
+                    let amountPrefix = '';
+                    let typeBadge = '';
+                    let rowProfitInfo = '';
 
-                    const amountColor = t.type === 'income' ? 'text-green-600' : 'text-red-600';
-                    const typeText = t.type === 'income' ? 'ចំណូល' : 'ចំណាយ';
-                    const amountPrefix = t.type === 'income' ? '+' : '-';
+                    if(t.type === 'income') {
+                        monthlyRevenueUSD += amtUSD;
+                        monthlyCostOfGoodsUSD += costUSD;
+                        
+                        amountColor = 'text-green-600';
+                        amountPrefix = '+';
+                        typeBadge = `<span class="bg-green-100 text-green-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-down mr-1"></i>ចំណូល</span>`;
+                        
+                        // Show profit info in row if it's income
+                        const rowProfit = amtUSD - costUSD;
+                        if(costUSD > 0) {
+                            rowProfitInfo = `
+                                <div class="text-xs mt-1 text-gray-500">
+                                    <span class="mr-2">ថ្លៃដើម: ${formatUSD(costUSD)}</span>
+                                    <span class="text-blue-500">ចំណេញ: ${formatUSD(rowProfit)}</span>
+                                </div>`;
+                        }
+                    } else {
+                        monthlyExpenseUSD += amtUSD;
+                        amountColor = 'text-red-600';
+                        amountPrefix = '-';
+                        typeBadge = `<span class="bg-red-100 text-red-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-up mr-1"></i>ចំណាយ</span>`;
+                    }
+
                     const displayAmount = tCurrency === 'KHR' ? formatKHR(t.amount) : formatUSD(t.amount);
 
                     const tr = document.createElement('tr');
-                    tr.className = 'border-b border-gray-200 hover:bg-gray-50';
+                    tr.className = 'border-b border-gray-200 hover:bg-blue-50 transition';
                     tr.innerHTML = `
                         <td class="py-3 px-4 text-center hide-on-print">
                             <input type="checkbox" class="row-checkbox h-4 w-4 cursor-pointer" data-id="${t.id}">
                         </td>
-                        <td class="py-3 px-4">${formatDate(t.date)}</td>
-                        <td class="py-3 px-4 font-medium">${t.desc}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">${formatDate(t.date)}</td>
                         <td class="py-3 px-4">
-                            <span class="${t.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} py-1 px-3 rounded-full text-xs">
-                                ${typeText}
-                            </span>
+                            <div class="font-medium text-gray-800">${t.desc}</div>
+                            ${rowProfitInfo}
                         </td>
-                        <td class="py-3 px-4 text-right font-bold ${amountColor}">
+                        <td class="py-3 px-4 text-center">
+                            <div class="text-xs text-gray-600 font-bold mb-1">${categoryLabel}</div>
+                            ${typeBadge}
+                        </td>
+                        <td class="py-3 px-4 text-right font-bold ${amountColor} whitespace-nowrap">
                             ${amountPrefix}${displayAmount}
                         </td>
                         <td class="py-3 px-4 text-center hide-on-print">
-                            <button onclick="deleteTransaction('${t.id}')" class="text-red-500 hover:text-red-700 transition" title="លុប">
-                                <i class="fas fa-trash"></i>
+                            <button onclick="deleteTransaction('${t.id}')" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition" title="លុបទិន្នន័យ">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
-                });
+                }
+            });
+
+            if (filteredCount === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
             }
 
-            // Update Summaries
-            const balanceUSD = totalInUSD - totalOutUSD;
+            // Update Monthly Summaries
+            const monthlyProfitUSD = monthlyRevenueUSD - monthlyCostOfGoodsUSD - monthlyExpenseUSD;
             
-            document.getElementById('totalIncome').innerText = formatUSD(totalInUSD);
-            document.getElementById('totalIncomeKHR').innerText = formatKHR(totalInUSD * EX_RATE);
+            document.getElementById('monthlyIncome').innerText = formatUSD(monthlyRevenueUSD);
+            document.getElementById('monthlyIncomeKHR').innerText = formatKHR(monthlyRevenueUSD * EX_RATE);
             
-            document.getElementById('totalExpense').innerText = formatUSD(totalOutUSD);
-            document.getElementById('totalExpenseKHR').innerText = formatKHR(totalOutUSD * EX_RATE);
+            document.getElementById('monthlyExpense').innerText = formatUSD(monthlyExpenseUSD);
+            document.getElementById('monthlyExpenseKHR').innerText = formatKHR(monthlyExpenseUSD * EX_RATE);
             
-            document.getElementById('totalBalance').innerText = formatUSD(balanceUSD);
-            document.getElementById('totalBalanceKHR').innerText = formatKHR(balanceUSD * EX_RATE);
+            const profitEl = document.getElementById('monthlyProfit');
+            profitEl.innerText = formatUSD(monthlyProfitUSD);
+            document.getElementById('monthlyProfitKHR').innerText = formatKHR(monthlyProfitUSD * EX_RATE);
+            
+            // Color code profit
+            if(monthlyProfitUSD >= 0) {
+                profitEl.className = 'text-2xl font-bold text-blue-600';
+            } else {
+                profitEl.className = 'text-2xl font-bold text-red-600';
+            }
             
             // For print summary
-            document.getElementById('printTotalIncome').innerText = `${formatUSD(totalInUSD)} / ${formatKHR(totalInUSD * EX_RATE)}`;
-            document.getElementById('printTotalExpense').innerText = `${formatUSD(totalOutUSD)} / ${formatKHR(totalOutUSD * EX_RATE)}`;
-            document.getElementById('printTotalBalance').innerText = `${formatUSD(balanceUSD)} / ${formatKHR(balanceUSD * EX_RATE)}`;
+            document.getElementById('printTotalIncome').innerText = `${formatUSD(monthlyRevenueUSD)} / ${formatKHR(monthlyRevenueUSD * EX_RATE)}`;
+            document.getElementById('printTotalExpense').innerText = `${formatUSD(monthlyExpenseUSD)} / ${formatKHR(monthlyExpenseUSD * EX_RATE)}`;
+            document.getElementById('printTotalProfit').innerText = `${formatUSD(monthlyProfitUSD)} / ${formatKHR(monthlyProfitUSD * EX_RATE)}`;
 
             // Reset Select All checkbox
             document.getElementById('selectAll').checked = false;
@@ -464,12 +560,14 @@
             const date = document.getElementById('tDate').value;
             const typeEl = document.querySelector('input[name="tType"]:checked');
             const type = typeEl ? typeEl.value : 'income';
+            const category = document.getElementById('tCategory').value;
             const desc = document.getElementById('tDesc').value;
             const amount = document.getElementById('tAmount').value;
+            const costPrice = document.getElementById('tCost').value;
             const currency = document.getElementById('tCurrency').value;
 
             if(!date || !desc || !amount) {
-                showModal('កំហុស', 'សូមបំពេញព័ត៌មានអោយបានគ្រប់គ្រាន់!');
+                showModal('បំពេញព័ត៌មានមិនគ្រប់', 'សូមបញ្ចូលទិន្នន័យចាំបាច់អោយបានត្រឹមត្រូវ!');
                 return;
             }
 
@@ -477,22 +575,31 @@
                 id: Date.now().toString(),
                 date,
                 type,
+                category,
                 desc,
                 amount: parseFloat(amount),
+                costPrice: costPrice ? parseFloat(costPrice) : 0,
                 currency: currency
             };
 
             transactions.push(newTx);
             saveData();
+            
+            // Ensure month filter moves to the month of the added transaction to see it
+            document.getElementById('monthFilter').value = date.substring(0, 7);
             renderApp();
             
             // Reset form partly
             document.getElementById('tDesc').value = '';
             document.getElementById('tAmount').value = '';
+            document.getElementById('tCost').value = '';
+            
+            // Focus back on description for fast entry
+            document.getElementById('tDesc').focus();
         });
 
         function deleteTransaction(id) {
-            showModal('បញ្ជាក់ការលុប', 'តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?', 'confirm', () => {
+            showModal('បញ្ជាក់ការលុប', 'តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ? ទិន្នន័យដែលលុបហើយមិនអាចទាញមកវិញបានទេ។', 'confirm', () => {
                 transactions = transactions.filter(t => t.id !== id);
                 saveData();
                 renderApp();
@@ -510,8 +617,9 @@
             let hasSelection = false;
 
             // Recalculate totals for printed items
-            let pInUSD = 0;
-            let pOutUSD = 0;
+            let pRevenue = 0;
+            let pExpense = 0;
+            let pCost = 0;
 
             // Hide unselected rows
             checkboxes.forEach(cb => {
@@ -526,23 +634,31 @@
                     if(tx) {
                         const tCurrency = tx.currency || 'USD';
                         let amtUSD = tCurrency === 'KHR' ? parseFloat(tx.amount) / EX_RATE : parseFloat(tx.amount);
-                        if(tx.type === 'income') pInUSD += amtUSD;
-                        else pOutUSD += amtUSD;
+                        let cstUSD = tx.costPrice ? (tCurrency === 'KHR' ? parseFloat(tx.costPrice) / EX_RATE : parseFloat(tx.costPrice)) : 0;
+                        
+                        if(tx.type === 'income') {
+                            pRevenue += amtUSD;
+                            pCost += cstUSD;
+                        } else {
+                            pExpense += amtUSD;
+                        }
                     }
                 }
             });
 
             if (!hasSelection) {
-                showModal('ជូនដំណឹង', 'សូមជ្រើសរើសទិន្នន័យយ៉ាងហោចណាស់១ដើម្បី Print!');
+                showModal('ជ្រើសរើសទិន្នន័យ', 'សូម Check លើប្រអប់ខាងឆ្វេង ដើម្បីជ្រើសរើសទិន្នន័យដែលអ្នកចង់ Print!');
                 // Revert hiding
                 checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
                 return;
             }
 
+            const pProfit = pRevenue - pCost - pExpense;
+
             // Update Print Summary amounts
-            document.getElementById('printTotalIncome').innerText = `${formatUSD(pInUSD)} / ${formatKHR(pInUSD * EX_RATE)}`;
-            document.getElementById('printTotalExpense').innerText = `${formatUSD(pOutUSD)} / ${formatKHR(pOutUSD * EX_RATE)}`;
-            document.getElementById('printTotalBalance').innerText = `${formatUSD(pInUSD - pOutUSD)} / ${formatKHR((pInUSD - pOutUSD) * EX_RATE)}`;
+            document.getElementById('printTotalIncome').innerText = `${formatUSD(pRevenue)} / ${formatKHR(pRevenue * EX_RATE)}`;
+            document.getElementById('printTotalExpense').innerText = `${formatUSD(pExpense)} / ${formatKHR(pExpense * EX_RATE)}`;
+            document.getElementById('printTotalProfit').innerText = `${formatUSD(pProfit)} / ${formatKHR(pProfit * EX_RATE)}`;
 
             // Show summary area for print
             const printSummary = document.getElementById('print-summary-area');
@@ -565,17 +681,18 @@
             localStorage.setItem('finance_data', JSON.stringify(transactions));
         }
 
+        // Initialize Form UI based on default checked radio
+        toggleFormFields();
+        
         // Initial render
         renderApp();
 
         // PWA Implementation (Service Worker & Install Prompt)
         if ('serviceWorker' in navigator) {
-            // Inline Service Worker script to keep everything in one file
             const swCode = `
                 self.addEventListener('install', event => self.skipWaiting());
                 self.addEventListener('activate', event => event.waitUntil(clients.claim()));
                 self.addEventListener('fetch', event => {
-                    // Simple pass-through fetch to satisfy PWA network requirements
                     event.respondWith(fetch(event.request).catch(error => {
                         console.error('Network request failed:', error);
                     }));
@@ -591,16 +708,12 @@
             });
         }
 
-        // Handle PWA Install Prompt
         let deferredPrompt;
         const installBtn = document.getElementById('installPwaBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later
             deferredPrompt = e;
-            // Show the custom install button
             if(installBtn) installBtn.classList.remove('hidden');
         });
 
