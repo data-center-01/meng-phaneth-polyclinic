@@ -10,12 +10,12 @@
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="MENG PHANETH POLYCLINIC">
-    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញប្រចាំខែ - MENG PHANETH POLYCLINIC">
+    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ  - MENG PHANETH POLYCLINIC">
     <meta property="og:image" content="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MENG PHANETH POLYCLINIC">
-    <meta name="twitter:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញប្រចាំខែ">
+    <meta name="twitter:description" content="ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ ">
     <meta name="twitter:image" content="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true">
 
     <!-- PWA Meta Tags & Icons -->
@@ -89,43 +89,50 @@
                 <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Clinic Logo" class="w-16 h-16 object-contain">
                 <div>
                     <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">MENG PHANETH POLYCLINIC</h1>
-                    <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ និងប្រាក់ចំណេញ</p>
+                    <p class="text-gray-600 text-sm"><i class="fas fa-wallet text-blue-500 mr-1"></i> ប្រព័ន្ធគ្រប់គ្រងចំណូលចំណាយ</p>
                 </div>
             </div>
             <div class="mt-4 md:mt-0 flex gap-2 flex-wrap md:justify-end">
+                <div class="bg-gray-100 p-1 rounded-lg flex space-x-1">
+                    <button onclick="switchMode('clinic')" id="btnModeClinic" class="px-4 py-2 rounded-md font-bold text-white bg-blue-600 shadow-sm transition"><i class="fas fa-hospital mr-1"></i> ក្រុមហ៊ុន (គ្លីនិក)</button>
+                    <button onclick="switchMode('staff')" id="btnModeStaff" class="px-4 py-2 rounded-md font-medium text-gray-600 hover:bg-gray-200 transition"><i class="fas fa-users mr-1"></i> សាច់ប្រាក់បុគ្គលិក</button>
+                </div>
                 <button id="installPwaBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow transition hidden">
                     <i class="fas fa-mobile-alt mr-1"></i> ដំឡើងកម្មវិធី
                 </button>
             </div>
         </header>
 
-        <!-- Filters (Month & Category Sheets) -->
+        <!-- Filters -->
         <div class="mb-6 bg-white p-4 rounded-xl border border-gray-200 hide-on-print shadow-sm">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                <h2 class="text-lg font-bold text-blue-900"><i class="fas fa-filter mr-2"></i>ជម្រើសរបាយការណ៍ (Filters)</h2>
-                <div class="flex items-center gap-2">
-                    <label class="text-gray-700 font-bold">ជ្រើសរើសខែ៖</label>
-                    <input type="month" id="monthFilter" class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50" onchange="renderApp()">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <h2 class="text-lg font-bold text-blue-900" id="filterTitle"><i class="fas fa-filter mr-2"></i>ជម្រើសរបាយការណ៍</h2>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <label class="text-gray-700 font-bold text-sm">ប្រភេទ៖</label>
+                        <select id="reportType" class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50 text-sm" onchange="toggleFilterType()">
+                            <option value="monthly">ប្រចាំខែ</option>
+                            <option value="daily">ប្រចាំថ្ងៃ</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2" id="filterMonthContainer">
+                        <input type="month" id="monthFilter" class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50 text-sm" onchange="renderApp()">
+                    </div>
+                    <div class="flex items-center gap-2 hidden" id="filterDateContainer">
+                        <input type="date" id="dateFilter" class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50 text-sm" onchange="renderApp()">
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Category Tabs (Sheets) -->
-            <div class="flex space-x-2 border-b border-gray-200 overflow-x-auto pt-2">
-                <button onclick="setCategoryFilter('All')" id="tab-All" class="px-4 py-2 font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition"><i class="fas fa-layer-group mr-1"></i>ទាំងអស់ (All)</button>
-                <button onclick="setCategoryFilter('គ្លីនិក')" id="tab-គ្លីនិក" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-clinic-medical mr-1"></i>គ្លីនិក</button>
-                <button onclick="setCategoryFilter('បុគ្គលិក')" id="tab-បុគ្គលិក" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-users mr-1"></i>បុគ្គលិក</button>
-                <button onclick="setCategoryFilter('ផ្សេងៗ')" id="tab-ផ្សេងៗ" class="px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition"><i class="fas fa-ellipsis-h mr-1"></i>ផ្សេងៗ</button>
             </div>
         </div>
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
+        <!-- Summary Cards - CLINIC MODE -->
+        <div id="clinicSummaryCards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print">
             <!-- Monthly Income -->
             <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-green-500 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 mb-1">សរុបចំណូល ប្រចាំខែ</p>
-                    <h2 class="text-2xl font-bold text-green-600" id="monthlyIncome">$0.00</h2>
-                    <p class="text-sm font-medium text-green-700 mt-1" id="monthlyIncomeKHR">0 ៛</p>
+                    <p class="text-sm text-gray-500 mb-1" id="lblClinicIncome">សរុបចំណូល</p>
+                    <h2 class="text-2xl font-bold text-green-600" id="clinicIncome">$0.00</h2>
+                    <p class="text-sm font-medium text-green-700 mt-1" id="clinicIncomeKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-green-100 rounded-full text-green-500">
                     <i class="fas fa-hand-holding-usd fa-lg"></i>
@@ -135,9 +142,9 @@
             <!-- Monthly Expense -->
             <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-red-500 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 mb-1">សរុបការចំណាយ ប្រចាំខែ</p>
-                    <h2 class="text-2xl font-bold text-red-600" id="monthlyExpense">$0.00</h2>
-                    <p class="text-sm font-medium text-red-700 mt-1" id="monthlyExpenseKHR">0 ៛</p>
+                    <p class="text-sm text-gray-500 mb-1" id="lblClinicExpense">សរុបការចំណាយ</p>
+                    <h2 class="text-2xl font-bold text-red-600" id="clinicExpense">$0.00</h2>
+                    <p class="text-sm font-medium text-red-700 mt-1" id="clinicExpenseKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-red-100 rounded-full text-red-500">
                     <i class="fas fa-file-invoice-dollar fa-lg"></i>
@@ -147,12 +154,51 @@
             <!-- Monthly Profit -->
             <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-blue-500 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 mb-1">សរុបចំណេញ ប្រចាំខែ</p>
-                    <h2 class="text-2xl font-bold text-blue-600" id="monthlyProfit">$0.00</h2>
-                    <p class="text-sm font-medium text-blue-700 mt-1" id="monthlyProfitKHR">0 ៛</p>
+                    <p class="text-sm text-gray-500 mb-1" id="lblClinicProfit">សរុបចំណេញ</p>
+                    <h2 class="text-2xl font-bold text-blue-600" id="clinicProfit">$0.00</h2>
+                    <p class="text-sm font-medium text-blue-700 mt-1" id="clinicProfitKHR">0 ៛</p>
                 </div>
                 <div class="p-3 bg-blue-100 rounded-full text-blue-500">
                     <i class="fas fa-chart-line fa-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards - STAFF MODE -->
+        <div id="staffSummaryCards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hide-on-print hidden">
+            <!-- Funds In -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-indigo-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1" id="lblStaffIn">ប្រាក់គោលរបបទទួលបាន (ចូល)</p>
+                    <h2 class="text-2xl font-bold text-indigo-600" id="staffFundsIn">$0.00</h2>
+                    <p class="text-sm font-medium text-indigo-700 mt-1" id="staffFundsInKHR">0 ៛</p>
+                </div>
+                <div class="p-3 bg-indigo-100 rounded-full text-indigo-500">
+                    <i class="fas fa-download fa-lg"></i>
+                </div>
+            </div>
+            
+            <!-- Funds Out (Expenses) -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-orange-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1" id="lblStaffOut">ការចំណាយបុគ្គលិក (ចេញ)</p>
+                    <h2 class="text-2xl font-bold text-orange-600" id="staffFundsOut">$0.00</h2>
+                    <p class="text-sm font-medium text-orange-700 mt-1" id="staffFundsOutKHR">0 ៛</p>
+                </div>
+                <div class="p-3 bg-orange-100 rounded-full text-orange-500">
+                    <i class="fas fa-upload fa-lg"></i>
+                </div>
+            </div>
+
+            <!-- Balance -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-teal-500 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1" id="lblStaffBalance">សមតុល្យសាច់ប្រាក់នៅសល់</p>
+                    <h2 class="text-2xl font-bold text-teal-600" id="staffBalance">$0.00</h2>
+                    <p class="text-sm font-medium text-teal-700 mt-1" id="staffBalanceKHR">0 ៛</p>
+                </div>
+                <div class="p-3 bg-teal-100 rounded-full text-teal-500">
+                    <i class="fas fa-wallet fa-lg"></i>
                 </div>
             </div>
         </div>
@@ -161,42 +207,54 @@
             <!-- Left Column: Form -->
             <div class="lg:col-span-1 hide-on-print">
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>បន្ថែមប្រតិបត្តិការថ្មី</h3>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2" id="formTitle"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>បន្ថែមប្រតិបត្តិការ ក្រុមហ៊ុន</h3>
                     <form id="transactionForm">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">កាលបរិច្ឆេទ</label>
                             <input type="date" id="tDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50">
                         </div>
                         
-                        <div class="mb-4">
+                        <!-- CLINIC Type Selection -->
+                        <div class="mb-4" id="clinicTypeSelector">
                             <label class="block text-gray-700 text-sm font-bold mb-2">ប្រភេទ</label>
                             <div class="flex gap-4 p-2 bg-gray-50 rounded border">
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="tType" value="income" required class="mr-2 h-4 w-4 text-green-600" onchange="toggleFormFields()" checked> ចំណូល
+                                    <input type="radio" name="tTypeClinic" value="income" required class="mr-2 h-4 w-4 text-green-600" onchange="toggleFormFields()" checked> ចំណូលក្រុមហ៊ុន
                                 </label>
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="tType" value="expense" required class="mr-2 h-4 w-4 text-red-600" onchange="toggleFormFields()"> ចំណាយ
+                                    <input type="radio" name="tTypeClinic" value="expense" required class="mr-2 h-4 w-4 text-red-600" onchange="toggleFormFields()"> ចំណាយក្រុមហ៊ុន
                                 </label>
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <!-- STAFF Type Selection -->
+                        <div class="mb-4 hidden" id="staffTypeSelector">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ចលនាសាច់ប្រាក់</label>
+                            <div class="flex gap-4 p-2 bg-gray-50 rounded border">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="tTypeStaff" value="fund_in" class="mr-2 h-4 w-4 text-indigo-600" onchange="toggleFormFields()"> លុយចូល (មេបើកអោយ)
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="tTypeStaff" value="fund_out" class="mr-2 h-4 w-4 text-orange-600" onchange="toggleFormFields()" checked> លុយចេញ (ចំណាយ)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4" id="categoryContainer">
                             <label class="block text-gray-700 text-sm font-bold mb-2">ក្រុមចំណាត់ថ្នាក់</label>
                             <select id="tCategory" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-gray-50">
-                                <option value="គ្លីនិក">គ្លីនិក (ចំណូល-ចំណាយ / ថ្នាំពេទ្យ)</option>
-                                <option value="បុគ្គលិក">បុគ្គលិក (ហូបចុក / ផ្គត់ផ្គង់)</option>
-                                <option value="ផ្សេងៗ">ផ្សេងៗ (ទូទៅ)</option>
+                                <!-- Options dynamically generated based on mode -->
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">ការពិពណ៌នា</label>
-                            <input type="text" id="tDesc" required placeholder="ឧ. លក់ថ្នាំ, ទិញម្ហូប..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                            <input type="text" id="tDesc" required placeholder="ឧ. លក់ថ្នាំ, សេវាពិនិត្យ..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
                         </div>
 
-                        <!-- Cost Price (Shown only for Income) -->
+                        <!-- Cost Price (Shown only for Clinic Income) -->
                         <div class="mb-4 bg-blue-50 p-3 rounded border border-blue-100" id="costGroup">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">ប្រាក់ថ្លៃដើមថ្នាំ (Cost Price)</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">ប្រាក់ថ្លៃដើមថ្នាំ/សេវា (Cost)</label>
                             <div class="flex gap-2">
                                 <input type="number" step="0.01" id="tCost" placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
                             </div>
@@ -205,7 +263,7 @@
 
                         <div class="mb-6 flex gap-2">
                             <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" id="amountLabel">តម្លៃត្រូវលក់ចេញ (Selling Price)</label>
+                                <label class="block text-gray-700 text-sm font-bold mb-2" id="amountLabel">តម្លៃត្រូវលក់ចេញ</label>
                                 <input type="number" step="0.01" id="tAmount" required placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 font-bold">
                             </div>
                             <div class="w-24">
@@ -230,16 +288,21 @@
                     <img src="https://github.com/data-center-01/meng-phaneth-polyclinic/blob/main/poly%20clinic%20logo.png?raw=true" alt="Logo" class="print-header-logo">
                     <div class="print-header-text">
                         <h2 class="print-header-title">MENG PHANETH POLYCLINIC</h2>
-                        <p class="print-header-subtitle">របាយការណ៍ចំណូលចំណាយ ប្រចាំខែ <span id="printMonthLabel"></span> <span id="printCategoryLabel" class="text-blue-600 font-bold ml-1"></span></p>
+                        <p class="print-header-subtitle" id="printReportTitle">របាយការណ៍ចំណូលចំណាយ ក្រុមហ៊ុន <span id="printDateLabel" class="text-blue-600 font-bold ml-1"></span></p>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                    <div class="p-4 border-b flex justify-between items-center hide-on-print bg-gray-50">
-                        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-list-alt text-gray-500 mr-2"></i>បញ្ជីប្រតិបត្តិការ</h3>
-                        <button onclick="printSelected()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded shadow transition text-sm flex items-center gap-2">
-                            <i class="fas fa-print"></i> Print (ព្រីន)
-                        </button>
+                    <div class="p-4 border-b flex justify-between items-center hide-on-print bg-gray-50 flex-wrap gap-2">
+                        <h3 class="text-xl font-bold text-gray-800" id="tableTitle"><i class="fas fa-list-alt text-gray-500 mr-2"></i>បញ្ជីប្រតិបត្តិការ ក្រុមហ៊ុន</h3>
+                        <div class="flex gap-2">
+                            <button onclick="printReport('selected')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded shadow transition text-sm flex items-center gap-1 font-medium">
+                                <i class="fas fa-check-square"></i> Print ជម្រើស
+                            </button>
+                            <button onclick="printReport('all')" class="bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 rounded shadow transition text-sm flex items-center gap-1 font-bold">
+                                <i class="fas fa-print"></i> Print របាយការណ៍នេះ
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="overflow-x-auto">
@@ -262,16 +325,22 @@
                         </table>
                         <div id="emptyState" class="text-center py-12 text-gray-400 hidden hide-on-print">
                             <i class="fas fa-box-open text-5xl mb-4 opacity-50"></i>
-                            <p class="text-lg">មិនមានទិន្នន័យសម្រាប់ខែនេះទេ</p>
+                            <p class="text-lg">មិនមានទិន្នន័យសម្រាប់កាលបរិច្ឆេទនេះទេ</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Print Summary (Only visible when printing) -->
-                <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area">
+                <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area-clinic">
                     <p>សរុបចំណូល: <span id="printTotalIncome" class="text-green-600">$0.00 / 0 ៛</span></p>
                     <p>សរុបចំណាយ: <span id="printTotalExpense" class="text-red-600">$0.00 / 0 ៛</span></p>
                     <p class="mt-2 pt-2 border-t border-gray-400">ប្រាក់ចំណេញសរុប: <span id="printTotalProfit" class="text-blue-600">$0.00 / 0 ៛</span></p>
+                </div>
+
+                <div class="hidden mt-6 text-right font-bold text-lg" id="print-summary-area-staff">
+                    <p>សរុបប្រាក់គោលរបប (ចូល): <span id="printStaffIn" class="text-indigo-600">$0.00 / 0 ៛</span></p>
+                    <p>សរុបការចំណាយ (ចេញ): <span id="printStaffOut" class="text-orange-600">$0.00 / 0 ៛</span></p>
+                    <p class="mt-2 pt-2 border-t border-gray-400">សមតុល្យប្រាក់នៅសល់: <span id="printStaffBalance" class="text-teal-600">$0.00 / 0 ៛</span></p>
                 </div>
             </div>
         </div>
@@ -344,19 +413,119 @@
             }, 200);
         }
 
-        // Form toggle logic
+        // --- New Logic for App Modes (Clinic vs Staff) ---
+        let currentMode = 'clinic'; // 'clinic' or 'staff'
+        
+        function switchMode(mode) {
+            currentMode = mode;
+            const btnClinic = document.getElementById('btnModeClinic');
+            const btnStaff = document.getElementById('btnModeStaff');
+            const clinicSummary = document.getElementById('clinicSummaryCards');
+            const staffSummary = document.getElementById('staffSummaryCards');
+            const clinicTypeSel = document.getElementById('clinicTypeSelector');
+            const staffTypeSel = document.getElementById('staffTypeSelector');
+            const formTitle = document.getElementById('formTitle');
+            const tableTitle = document.getElementById('tableTitle');
+            
+            if (mode === 'clinic') {
+                btnClinic.className = "px-4 py-2 rounded-md font-bold text-white bg-blue-600 shadow-sm transition";
+                btnStaff.className = "px-4 py-2 rounded-md font-medium text-gray-600 hover:bg-gray-200 transition";
+                
+                clinicSummary.classList.remove('hidden');
+                staffSummary.classList.add('hidden');
+                
+                clinicTypeSel.classList.remove('hidden');
+                staffTypeSel.classList.add('hidden');
+                
+                formTitle.innerHTML = '<i class="fas fa-plus-circle text-blue-500 mr-2"></i>បន្ថែមប្រតិបត្តិការ ក្រុមហ៊ុន';
+                tableTitle.innerHTML = '<i class="fas fa-list-alt text-gray-500 mr-2"></i>បញ្ជីប្រតិបត្តិការ ក្រុមហ៊ុន';
+                
+                updateCategoryDropdown();
+            } else {
+                btnStaff.className = "px-4 py-2 rounded-md font-bold text-white bg-blue-600 shadow-sm transition";
+                btnClinic.className = "px-4 py-2 rounded-md font-medium text-gray-600 hover:bg-gray-200 transition";
+                
+                staffSummary.classList.remove('hidden');
+                clinicSummary.classList.add('hidden');
+                
+                staffTypeSel.classList.remove('hidden');
+                clinicTypeSel.classList.add('hidden');
+                
+                formTitle.innerHTML = '<i class="fas fa-plus-circle text-blue-500 mr-2"></i>បន្ថែមចលនាសាច់ប្រាក់ បុគ្គលិក';
+                tableTitle.innerHTML = '<i class="fas fa-list-alt text-gray-500 mr-2"></i>តារាងសាច់ប្រាក់ និងចំណាយបុគ្គលិក';
+                
+                updateCategoryDropdown();
+            }
+            
+            toggleFormFields();
+            renderApp();
+        }
+
+        function updateCategoryDropdown() {
+            const select = document.getElementById('tCategory');
+            select.innerHTML = '';
+            
+            if (currentMode === 'clinic') {
+                select.innerHTML = `
+                    <option value="លក់ថ្នាំ">លក់ថ្នាំពេទ្យ</option>
+                    <option value="សេវាពិនិត្យ">សេវាពិនិត្យ និងពិគ្រោះជំងឺ</option>
+                    <option value="សេវាផ្សេងៗ">សម្រាលកូន, វះកាត់, គេងពេទ្យ...</option>
+                    <option value="ចំណាយទូទៅ">ចំណាយទូទៅក្រុមហ៊ុន</option>
+                `;
+            } else {
+                select.innerHTML = `
+                    <option value="ប្រាក់គោលរបប">ប្រាក់គោលរបបពីមេ</option>
+                    <option value="ចំណាយបុគ្គលិក">ចំណាយបុគ្គលិក (ហូបចុក...)</option>
+                    <option value="ចំណាយភ្លាមៗ">ចំណាយភ្លាមៗផ្សេងៗ</option>
+                `;
+            }
+        }
+
+        function toggleFilterType() {
+            const type = document.getElementById('reportType').value;
+            const monthCont = document.getElementById('filterMonthContainer');
+            const dateCont = document.getElementById('filterDateContainer');
+            
+            if (type === 'monthly') {
+                monthCont.classList.remove('hidden');
+                dateCont.classList.add('hidden');
+            } else {
+                monthCont.classList.add('hidden');
+                dateCont.classList.remove('hidden');
+            }
+            renderApp();
+        }
+
+        // Form toggle logic (Updated for modes)
         function toggleFormFields() {
-            const type = document.querySelector('input[name="tType"]:checked').value;
             const costGroup = document.getElementById('costGroup');
             const amountLabel = document.getElementById('amountLabel');
+            const descInput = document.getElementById('tDesc');
             
-            if(type === 'income') {
-                costGroup.classList.remove('hidden');
-                amountLabel.innerText = 'តម្លៃត្រូវលក់ចេញ (Selling Price)';
+            if (currentMode === 'clinic') {
+                const type = document.querySelector('input[name="tTypeClinic"]:checked').value;
+                if(type === 'income') {
+                    costGroup.classList.remove('hidden');
+                    amountLabel.innerText = 'តម្លៃត្រូវលក់ចេញ (Selling Price)';
+                    descInput.placeholder = "ឧ. លក់ថ្នាំ, សេវាពិនិត្យ...";
+                } else {
+                    costGroup.classList.add('hidden');
+                    amountLabel.innerText = 'ទឹកប្រាក់ចំណាយក្រុមហ៊ុន (Expense)';
+                    document.getElementById('tCost').value = '';
+                    descInput.placeholder = "ឧ. ទិញសម្ភារៈពេទ្យ...";
+                }
             } else {
-                costGroup.classList.add('hidden');
-                amountLabel.innerText = 'ទឹកប្រាក់ចំណាយ (Expense Amount)';
+                costGroup.classList.add('hidden'); // Staff never uses cost price
                 document.getElementById('tCost').value = '';
+                
+                const type = document.querySelector('input[name="tTypeStaff"]:checked').value;
+                if(type === 'fund_in') {
+                    amountLabel.innerText = 'ចំនួនប្រាក់ទទួលបាន (Received)';
+                    descInput.placeholder = "ឧ. មេបើកលុយអោយ...";
+                } else {
+                    amountLabel.innerText = 'ទឹកប្រាក់ចំណាយ (Spent)';
+                    descInput.placeholder = "ឧ. ទិញម្ហូប, ទិញទឹក...";
+                }
             }
         }
 
@@ -369,74 +538,53 @@
         const localISOTime = (new Date(today - offset)).toISOString();
         
         document.getElementById('tDate').value = localISOTime.split('T')[0];
+        document.getElementById('dateFilter').value = localISOTime.split('T')[0];
         document.getElementById('monthFilter').value = localISOTime.substring(0, 7); // YYYY-MM
 
         // Initialize state from local storage securely
         let transactions = [];
-        try {
-            const storedData = localStorage.getItem('finance_data');
-            if (storedData) {
-                transactions = JSON.parse(storedData);
-                if (!Array.isArray(transactions)) transactions = [];
-            }
-        } catch (e) {
-            console.error("Error loading data", e);
-            transactions = [];
-        }
+        // Global State for Category Sheet (Deprecated in favor of Modes, keeping logic simple)
+        // let currentCategoryFilter = 'All';
 
-        // Formatting functions
-        const formatUSD = (amount) => {
-            return '$' + parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        };
-        
-        const formatKHR = (amount) => {
-            return Math.round(amount).toLocaleString('en-US') + ' ៛';
-        };
-
-        const formatDate = (dateString) => {
-            if (!dateString) return '';
-            try {
-                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-                return new Date(dateString).toLocaleDateString('en-GB', options);
-            } catch(e) { return dateString; }
-        };
-
-        // Global State for Category Sheet
-        let currentCategoryFilter = 'All';
-
-        function setCategoryFilter(category) {
-            currentCategoryFilter = category;
-            renderApp();
-        }
+        // function setCategoryFilter(category) {
+        //     currentCategoryFilter = category;
+        //     renderApp();
+        // }
 
         // Render functions
         function renderApp() {
             const tbody = document.getElementById('tableBody');
             const emptyState = document.getElementById('emptyState');
-            const monthFilter = document.getElementById('monthFilter').value; // 'YYYY-MM'
+            
+            const reportType = document.getElementById('reportType').value;
+            const filterValue = reportType === 'monthly' ? document.getElementById('monthFilter').value : document.getElementById('dateFilter').value;
             
             // Set Print label
-            document.getElementById('printMonthLabel').innerText = monthFilter;
-            document.getElementById('printCategoryLabel').innerText = currentCategoryFilter === 'All' ? '(គ្រប់ក្រុមទាំងអស់)' : `(ក្រុម: ${currentCategoryFilter})`;
+            let displayDate = reportType === 'monthly' ? `ប្រចាំខែ ${filterValue}` : `ប្រចាំថ្ងៃ ${formatDate(filterValue)}`;
+            document.getElementById('printDateLabel').innerText = displayDate;
+            document.getElementById('printReportTitle').innerHTML = currentMode === 'clinic' ? 
+                `របាយការណ៍ចំណូលចំណាយ ក្រុមហ៊ុន <span class="text-blue-600 font-bold ml-1">${displayDate}</span>` : 
+                `របាយការណ៍សាច់ប្រាក់ និងចំណាយបុគ្គលិក <span class="text-blue-600 font-bold ml-1">${displayDate}</span>`;
             
-            // Update Tab UI
-            const tabs = ['All', 'គ្លីនិក', 'បុគ្គលិក', 'ផ្សេងៗ'];
-            tabs.forEach(tab => {
-                const tabEl = document.getElementById(`tab-${tab}`);
-                if(tabEl) {
-                    if(tab === currentCategoryFilter) {
-                        tabEl.className = "px-4 py-2 font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition";
-                    } else {
-                        tabEl.className = "px-4 py-2 font-medium text-gray-500 hover:text-blue-600 border-b-2 border-transparent whitespace-nowrap transition";
-                    }
-                }
-            });
+            // Update UI Labels based on filter
+            const lblSuffix = reportType === 'monthly' ? 'ប្រចាំខែ' : 'ប្រចាំថ្ងៃ';
+            document.getElementById('lblClinicIncome').innerText = `សរុបចំណូល ${lblSuffix}`;
+            document.getElementById('lblClinicExpense').innerText = `សរុបការចំណាយ ${lblSuffix}`;
+            document.getElementById('lblClinicProfit').innerText = `សរុបចំណេញ ${lblSuffix}`;
+            
+            document.getElementById('lblStaffIn').innerText = `ប្រាក់គោលរបបទទួលបាន (ចូល) ${lblSuffix}`;
+            document.getElementById('lblStaffOut').innerText = `ការចំណាយបុគ្គលិក (ចេញ) ${lblSuffix}`;
 
             tbody.innerHTML = '';
 
-            let monthlyRevenueUSD = 0;
-            let monthlyExpenseUSD = 0;
-            let monthlyCostOfGoodsUSD = 0;
+            // Clinic Totals
+            let clinicIncomeUSD = 0;
+            let clinicExpenseUSD = 0;
+            let clinicCostUSD = 0;
+            
+            // Staff Totals
+            let staffInUSD = 0;
+            let staffOutUSD = 0;
             
             let filteredCount = 0;
 
@@ -448,11 +596,18 @@
             });
 
             transactions.forEach(t => {
-                const tMonth = t.date ? t.date.substring(0, 7) : '';
-                const categoryLabel = t.category || 'គ្លីនិក'; // Fallback for old data
+                const tDateStr = t.date || '';
+                const matchFilter = reportType === 'monthly' ? tDateStr.startsWith(filterValue) : tDateStr === filterValue;
                 
-                // Only process items for the selected month AND selected category sheet
-                if (tMonth === monthFilter && (currentCategoryFilter === 'All' || categoryLabel === currentCategoryFilter)) {
+                // Determine transaction mode implicitly based on type if old data exists, or use a specific property if added.
+                // Assuming: 'income'/'expense' are Clinic, 'fund_in'/'fund_out' are Staff. 
+                // For old data fallback, we treat them as Clinic.
+                const txType = t.type;
+                const isClinicTx = (txType === 'income' || txType === 'expense');
+                const isStaffTx = (txType === 'fund_in' || txType === 'fund_out');
+                
+                // If the transaction belongs to the current mode and matches the date filter
+                if (matchFilter && ((currentMode === 'clinic' && isClinicTx) || (currentMode === 'staff' && isStaffTx))) {
                     filteredCount++;
                     
                     const tCurrency = t.currency || 'USD';
@@ -464,34 +619,47 @@
                     let typeBadge = '';
                     let rowProfitInfo = '';
 
-                    if(t.type === 'income') {
-                        monthlyRevenueUSD += amtUSD;
-                        monthlyCostOfGoodsUSD += costUSD;
-                        
-                        amountColor = 'text-green-600';
-                        amountPrefix = '+';
-                        typeBadge = `<span class="bg-green-100 text-green-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-down mr-1"></i>ចំណូល</span>`;
-                        
-                        // Show profit info in row if it's income
-                        const rowProfit = amtUSD - costUSD;
-                        if(costUSD > 0) {
-                            rowProfitInfo = `
-                                <div class="text-xs mt-1 text-gray-500">
-                                    <span class="mr-2">ថ្លៃដើម: ${formatUSD(costUSD)}</span>
-                                    <span class="text-blue-500">ចំណេញ: ${formatUSD(rowProfit)}</span>
-                                </div>`;
+                    if(currentMode === 'clinic') {
+                        if(txType === 'income') {
+                            clinicIncomeUSD += amtUSD;
+                            clinicCostUSD += costUSD;
+                            amountColor = 'text-green-600';
+                            amountPrefix = '+';
+                            typeBadge = `<span class="bg-green-100 text-green-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-down mr-1"></i>ចំណូល</span>`;
+                            
+                            const rowProfit = amtUSD - costUSD;
+                            if(costUSD > 0) {
+                                rowProfitInfo = `
+                                    <div class="text-xs mt-1 text-gray-500">
+                                        <span class="mr-2">ថ្លៃដើម: ${formatUSD(costUSD)}</span>
+                                        <span class="text-blue-500">ចំណេញ: ${formatUSD(rowProfit)}</span>
+                                    </div>`;
+                            }
+                        } else {
+                            clinicExpenseUSD += amtUSD;
+                            amountColor = 'text-red-600';
+                            amountPrefix = '-';
+                            typeBadge = `<span class="bg-red-100 text-red-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-up mr-1"></i>ចំណាយ</span>`;
                         }
                     } else {
-                        monthlyExpenseUSD += amtUSD;
-                        amountColor = 'text-red-600';
-                        amountPrefix = '-';
-                        typeBadge = `<span class="bg-red-100 text-red-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-arrow-up mr-1"></i>ចំណាយ</span>`;
+                        // Staff Mode
+                        if(txType === 'fund_in') {
+                            staffInUSD += amtUSD;
+                            amountColor = 'text-indigo-600';
+                            amountPrefix = '+';
+                            typeBadge = `<span class="bg-indigo-100 text-indigo-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-download mr-1"></i>លុយចូល</span>`;
+                        } else {
+                            staffOutUSD += amtUSD;
+                            amountColor = 'text-orange-600';
+                            amountPrefix = '-';
+                            typeBadge = `<span class="bg-orange-100 text-orange-700 py-1 px-2 rounded text-xs font-bold whitespace-nowrap"><i class="fas fa-upload mr-1"></i>លុយចេញ</span>`;
+                        }
                     }
 
                     const displayAmount = tCurrency === 'KHR' ? formatKHR(t.amount) : formatUSD(t.amount);
 
                     const tr = document.createElement('tr');
-                    tr.className = 'border-b border-gray-200 hover:bg-blue-50 transition';
+                    tr.className = 'border-b border-gray-200 hover:bg-blue-50 transition print-row';
                     tr.innerHTML = `
                         <td class="py-3 px-4 text-center hide-on-print">
                             <input type="checkbox" class="row-checkbox h-4 w-4 cursor-pointer" data-id="${t.id}">
@@ -502,7 +670,7 @@
                             ${rowProfitInfo}
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <div class="text-xs text-gray-600 font-bold mb-1">${categoryLabel}</div>
+                            <div class="text-xs text-gray-600 font-bold mb-1">${t.category || ''}</div>
                             ${typeBadge}
                         </td>
                         <td class="py-3 px-4 text-right font-bold ${amountColor} whitespace-nowrap">
@@ -524,30 +692,44 @@
                 emptyState.classList.add('hidden');
             }
 
-            // Update Monthly Summaries
-            const monthlyProfitUSD = monthlyRevenueUSD - monthlyCostOfGoodsUSD - monthlyExpenseUSD;
-            
-            document.getElementById('monthlyIncome').innerText = formatUSD(monthlyRevenueUSD);
-            document.getElementById('monthlyIncomeKHR').innerText = formatKHR(monthlyRevenueUSD * EX_RATE);
-            
-            document.getElementById('monthlyExpense').innerText = formatUSD(monthlyExpenseUSD);
-            document.getElementById('monthlyExpenseKHR').innerText = formatKHR(monthlyExpenseUSD * EX_RATE);
-            
-            const profitEl = document.getElementById('monthlyProfit');
-            profitEl.innerText = formatUSD(monthlyProfitUSD);
-            document.getElementById('monthlyProfitKHR').innerText = formatKHR(monthlyProfitUSD * EX_RATE);
-            
-            // Color code profit
-            if(monthlyProfitUSD >= 0) {
-                profitEl.className = 'text-2xl font-bold text-blue-600';
+            // Update Summaries UI
+            if (currentMode === 'clinic') {
+                const clinicProfitUSD = clinicIncomeUSD - clinicCostUSD - clinicExpenseUSD;
+                
+                document.getElementById('clinicIncome').innerText = formatUSD(clinicIncomeUSD);
+                document.getElementById('clinicIncomeKHR').innerText = formatKHR(clinicIncomeUSD * EX_RATE);
+                
+                document.getElementById('clinicExpense').innerText = formatUSD(clinicExpenseUSD);
+                document.getElementById('clinicExpenseKHR').innerText = formatKHR(clinicExpenseUSD * EX_RATE);
+                
+                const profitEl = document.getElementById('clinicProfit');
+                profitEl.innerText = formatUSD(clinicProfitUSD);
+                document.getElementById('clinicProfitKHR').innerText = formatKHR(clinicProfitUSD * EX_RATE);
+                profitEl.className = clinicProfitUSD >= 0 ? 'text-2xl font-bold text-blue-600' : 'text-2xl font-bold text-red-600';
+                
+                // For Print
+                document.getElementById('printTotalIncome').innerText = `${formatUSD(clinicIncomeUSD)} / ${formatKHR(clinicIncomeUSD * EX_RATE)}`;
+                document.getElementById('printTotalExpense').innerText = `${formatUSD(clinicExpenseUSD)} / ${formatKHR(clinicExpenseUSD * EX_RATE)}`;
+                document.getElementById('printTotalProfit').innerText = `${formatUSD(clinicProfitUSD)} / ${formatKHR(clinicProfitUSD * EX_RATE)}`;
             } else {
-                profitEl.className = 'text-2xl font-bold text-red-600';
+                const staffBalanceUSD = staffInUSD - staffOutUSD;
+                
+                document.getElementById('staffFundsIn').innerText = formatUSD(staffInUSD);
+                document.getElementById('staffFundsInKHR').innerText = formatKHR(staffInUSD * EX_RATE);
+                
+                document.getElementById('staffFundsOut').innerText = formatUSD(staffOutUSD);
+                document.getElementById('staffFundsOutKHR').innerText = formatKHR(staffOutUSD * EX_RATE);
+                
+                const balEl = document.getElementById('staffBalance');
+                balEl.innerText = formatUSD(staffBalanceUSD);
+                document.getElementById('staffBalanceKHR').innerText = formatKHR(staffBalanceUSD * EX_RATE);
+                balEl.className = staffBalanceUSD >= 0 ? 'text-2xl font-bold text-teal-600' : 'text-2xl font-bold text-red-600';
+
+                // For Print
+                document.getElementById('printStaffIn').innerText = `${formatUSD(staffInUSD)} / ${formatKHR(staffInUSD * EX_RATE)}`;
+                document.getElementById('printStaffOut').innerText = `${formatUSD(staffOutUSD)} / ${formatKHR(staffOutUSD * EX_RATE)}`;
+                document.getElementById('printStaffBalance').innerText = `${formatUSD(staffBalanceUSD)} / ${formatKHR(staffBalanceUSD * EX_RATE)}`;
             }
-            
-            // For print summary
-            document.getElementById('printTotalIncome').innerText = `${formatUSD(monthlyRevenueUSD)} / ${formatKHR(monthlyRevenueUSD * EX_RATE)}`;
-            document.getElementById('printTotalExpense').innerText = `${formatUSD(monthlyExpenseUSD)} / ${formatKHR(monthlyExpenseUSD * EX_RATE)}`;
-            document.getElementById('printTotalProfit').innerText = `${formatUSD(monthlyProfitUSD)} / ${formatKHR(monthlyProfitUSD * EX_RATE)}`;
 
             // Reset Select All checkbox
             document.getElementById('selectAll').checked = false;
@@ -558,8 +740,16 @@
             e.preventDefault();
             
             const date = document.getElementById('tDate').value;
-            const typeEl = document.querySelector('input[name="tType"]:checked');
-            const type = typeEl ? typeEl.value : 'income';
+            
+            let type = '';
+            if (currentMode === 'clinic') {
+                const typeEl = document.querySelector('input[name="tTypeClinic"]:checked');
+                type = typeEl ? typeEl.value : 'income';
+            } else {
+                const typeEl = document.querySelector('input[name="tTypeStaff"]:checked');
+                type = typeEl ? typeEl.value : 'fund_out';
+            }
+            
             const category = document.getElementById('tCategory').value;
             const desc = document.getElementById('tDesc').value;
             const amount = document.getElementById('tAmount').value;
@@ -578,21 +768,27 @@
                 category,
                 desc,
                 amount: parseFloat(amount),
-                costPrice: costPrice ? parseFloat(costPrice) : 0,
+                costPrice: (currentMode === 'clinic' && costPrice) ? parseFloat(costPrice) : 0,
                 currency: currency
             };
 
             transactions.push(newTx);
             saveData();
             
-            // Ensure month filter moves to the month of the added transaction to see it
-            document.getElementById('monthFilter').value = date.substring(0, 7);
+            // Adjust filter to show the newly added transaction
+            const reportType = document.getElementById('reportType').value;
+            if (reportType === 'monthly') {
+                document.getElementById('monthFilter').value = date.substring(0, 7);
+            } else {
+                document.getElementById('dateFilter').value = date;
+            }
+            
             renderApp();
             
             // Reset form partly
             document.getElementById('tDesc').value = '';
             document.getElementById('tAmount').value = '';
-            document.getElementById('tCost').value = '';
+            if(currentMode === 'clinic') document.getElementById('tCost').value = '';
             
             // Focus back on description for fast entry
             document.getElementById('tDesc').focus();
@@ -612,23 +808,40 @@
             checkboxes.forEach(cb => cb.checked = isChecked);
         }
 
-        function printSelected() {
+        function printReport(printType) {
             const checkboxes = document.querySelectorAll('.row-checkbox');
-            let hasSelection = false;
+            
+            if (printType === 'selected') {
+                let hasSelection = false;
+                // Check if anything is selected
+                checkboxes.forEach(cb => { if(cb.checked) hasSelection = true; });
+                
+                if (!hasSelection) {
+                    showModal('ជ្រើសរើសទិន្នន័យ', 'សូម Check លើប្រអប់ខាងឆ្វេង ដើម្បីជ្រើសរើសទិន្នន័យដែលអ្នកចង់ Print!');
+                    return;
+                }
+                
+                // Hide unselected rows
+                checkboxes.forEach(cb => {
+                    const tr = cb.closest('tr');
+                    if (!cb.checked) {
+                        tr.classList.add('hide-on-print');
+                    }
+                });
+            } else {
+                // 'all' - Ensure all visible rows are printable
+                checkboxes.forEach(cb => {
+                    cb.closest('tr').classList.remove('hide-on-print');
+                });
+            }
 
-            // Recalculate totals for printed items
-            let pRevenue = 0;
-            let pExpense = 0;
-            let pCost = 0;
+            // Recalculate totals for printed items to match what is visible on paper
+            let pClinicRev = 0, pClinicExp = 0, pClinicCost = 0;
+            let pStaffIn = 0, pStaffOut = 0;
 
-            // Hide unselected rows
-            checkboxes.forEach(cb => {
-                const tr = cb.closest('tr');
-                if (!cb.checked) {
-                    tr.classList.add('hide-on-print');
-                } else {
-                    hasSelection = true;
-                    // Find transaction data to sum up
+            document.querySelectorAll('.print-row:not(.hide-on-print)').forEach(tr => {
+                const cb = tr.querySelector('.row-checkbox');
+                if (cb) {
                     const txId = cb.getAttribute('data-id');
                     const tx = transactions.find(t => t.id === txId);
                     if(tx) {
@@ -636,34 +849,32 @@
                         let amtUSD = tCurrency === 'KHR' ? parseFloat(tx.amount) / EX_RATE : parseFloat(tx.amount);
                         let cstUSD = tx.costPrice ? (tCurrency === 'KHR' ? parseFloat(tx.costPrice) / EX_RATE : parseFloat(tx.costPrice)) : 0;
                         
-                        if(tx.type === 'income') {
-                            pRevenue += amtUSD;
-                            pCost += cstUSD;
-                        } else {
-                            pExpense += amtUSD;
-                        }
+                        if(tx.type === 'income') { pClinicRev += amtUSD; pClinicCost += cstUSD; }
+                        else if(tx.type === 'expense') { pClinicExp += amtUSD; }
+                        else if(tx.type === 'fund_in') { pStaffIn += amtUSD; }
+                        else if(tx.type === 'fund_out') { pStaffOut += amtUSD; }
                     }
                 }
             });
 
-            if (!hasSelection) {
-                showModal('ជ្រើសរើសទិន្នន័យ', 'សូម Check លើប្រអប់ខាងឆ្វេង ដើម្បីជ្រើសរើសទិន្នន័យដែលអ្នកចង់ Print!');
-                // Revert hiding
-                checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
-                return;
+            // Update Print Summary amounts dynamically based on what is being printed
+            if (currentMode === 'clinic') {
+                const pProfit = pClinicRev - pClinicCost - pClinicExp;
+                document.getElementById('printTotalIncome').innerText = `${formatUSD(pClinicRev)} / ${formatKHR(pClinicRev * EX_RATE)}`;
+                document.getElementById('printTotalExpense').innerText = `${formatUSD(pClinicExp)} / ${formatKHR(pClinicExp * EX_RATE)}`;
+                document.getElementById('printTotalProfit').innerText = `${formatUSD(pProfit)} / ${formatKHR(pProfit * EX_RATE)}`;
+                
+                document.getElementById('print-summary-area-clinic').style.display = 'block';
+                document.getElementById('print-summary-area-staff').style.display = 'none';
+            } else {
+                const pBal = pStaffIn - pStaffOut;
+                document.getElementById('printStaffIn').innerText = `${formatUSD(pStaffIn)} / ${formatKHR(pStaffIn * EX_RATE)}`;
+                document.getElementById('printStaffOut').innerText = `${formatUSD(pStaffOut)} / ${formatKHR(pStaffOut * EX_RATE)}`;
+                document.getElementById('printStaffBalance').innerText = `${formatUSD(pBal)} / ${formatKHR(pBal * EX_RATE)}`;
+                
+                document.getElementById('print-summary-area-staff').style.display = 'block';
+                document.getElementById('print-summary-area-clinic').style.display = 'none';
             }
-
-            const pProfit = pRevenue - pCost - pExpense;
-
-            // Update Print Summary amounts
-            document.getElementById('printTotalIncome').innerText = `${formatUSD(pRevenue)} / ${formatKHR(pRevenue * EX_RATE)}`;
-            document.getElementById('printTotalExpense').innerText = `${formatUSD(pExpense)} / ${formatKHR(pExpense * EX_RATE)}`;
-            document.getElementById('printTotalProfit').innerText = `${formatUSD(pProfit)} / ${formatKHR(pProfit * EX_RATE)}`;
-
-            // Show summary area for print
-            const printSummary = document.getElementById('print-summary-area');
-            printSummary.classList.remove('hidden');
-            printSummary.style.display = 'block';
 
             // Trigger print window
             window.print();
@@ -671,20 +882,22 @@
             // Revert changes after print
             setTimeout(() => {
                 checkboxes.forEach(cb => cb.closest('tr').classList.remove('hide-on-print'));
-                printSummary.classList.add('hidden');
-                printSummary.style.display = 'none';
+                document.getElementById('print-summary-area-clinic').style.display = 'none';
+                document.getElementById('print-summary-area-staff').style.display = 'none';
             }, 500);
         }
 
         // Data Management
         function saveData() {
-            localStorage.setItem('finance_data', JSON.stringify(transactions));
+            // NOTE: LocalStorage is disabled for the interactive preview. 
+            // Data will be kept in memory for this session.
+            console.log("Data saved to memory.");
         }
 
         // Initialize Form UI based on default checked radio
+        // Initial setup
+        updateCategoryDropdown();
         toggleFormFields();
-        
-        // Initial render
         renderApp();
 
         // PWA Implementation (Service Worker & Install Prompt)
